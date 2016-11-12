@@ -1,0 +1,19 @@
+body {
+	font-family: $page-font-family;
+	font-size: $page-font-size;
+	font-weight: 300;
+	line-height: 1.5em;
+}
+
+a {
+	color: inherit;
+	text-decoration: underline;
+
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+p {
+	margin: 0 0 1.5em;
+}

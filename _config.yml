@@ -1,0 +1,15 @@
+title: Candi
+description: >
+  What do you know about religions?
+  How well do you know them?
+baseurl: "/candi"
+url: ""
+
+sass:
+    sass_dir: _sass
+
+# Build settings
+markdown: kramdown
+exclude:
+  - Gemfile
+  - Gemfile.lock
