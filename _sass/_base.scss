@@ -1,0 +1,166 @@
+* {
+	box-sizing: border-box;
+	transition: color 0.3s;
+}
+
+body {
+	font-family: $font_body;
+	font-size: 16px;
+	line-height: 2em;
+	font-weight: 300;
+	color: $black;
+	margin: 0;
+	background-color: $light;
+
+	&>header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background-color: $dark;
+		color: $white;
+		padding: 0 64px;
+		border-bottom: 2px solid darken($dark, 5%);
+		text-shadow: -1px 1px rgba(0, 0, 0, .1);
+
+		&>h1 {
+			font-size: 1.5em;
+		}
+	}
+}
+
+h1, h2, h3, h4, h5, h6, nav {
+	font-family: $font_title;
+}
+
+a {
+	&:hover {
+		color: #ff5252;
+	}
+}
+
+p {
+	margin: 0 0 1.5em;
+}
+
+blockquote {
+	font-weight: 400;
+	font-style: italic;
+	color: #757575;
+	margin: 0;
+
+	&>* {
+		padding: 0 2em;
+		border-left: 1px solid #dcdcdc;
+	}
+}
+
+img+p {
+	margin-top: 1.5em;
+}
+
+nav {
+	text-decoration: none;
+	color: inherit;
+	text-transform: uppercase;
+
+	&>*:not(:first-child) {
+		margin-left: 1em;
+	}
+}
+
+nav a, header a {
+	text-decoration: none;
+	color: inherit;
+}
+
+main, article {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding-bottom: 5em;
+
+	&>header {
+		text-align: center;
+		padding-top: 2em;
+		padding-bottom: 1em;
+	}
+
+	& h1 {
+		font-size: 3em;
+		line-height: 1em;
+		margin-bottom: .2em;
+	}
+
+	&>* {
+		flex: 1 100%;
+		align-self: center;
+
+		&:not(.big) {
+			max-width: 778px;
+			padding-left: 64px;
+			padding-right: 64px;
+		}
+	}
+}
+
+/* Pagination */
+
+article footer nav {
+	display: flex;
+	justify-content: space-between;
+}
+
+@media only screen and (max-width: 700px) {
+	body {
+		line-height: 1.75em;
+	}
+
+	nav {
+		margin-bottom: 0.67em;
+	}
+
+	blockquote>* {
+		padding: 0 1em;
+	}
+
+	body>header {
+		padding: 0 13px;
+		flex-flow: row wrap;
+	}
+
+	body>header>* {
+		flex: 1 100%;
+		text-align: center;
+	}
+
+	article>*:not(.big) {
+		padding-left: 13px;
+		padding-right: 13px;
+	}
+
+	article>img:not(.big) {
+		padding-left: 0;
+		padding-right: 0;
+		max-width: 100%;
+	}
+
+	article>header {
+		padding-top: 0;
+	}
+
+	article footer nav {
+		flex-flow: row wrap;
+	}
+
+	article footer nav>* {
+		flex: 1 100%;
+		text-align: center;
+	}
+}
+
+@media only screen and (max-width: 320px) {
+	article h1 {
+		font-size: 2.5em;
+	}
+}

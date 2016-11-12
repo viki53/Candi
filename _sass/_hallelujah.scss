@@ -1,0 +1,46 @@
+.card {
+	min-height: 50vh;
+	width: 100%;
+	padding: 1em;
+	margin: 1em;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+
+	&.orange {
+		background-color: $orange;
+		border: solid 8px darken($orange, 5%);
+		color: $white;
+	}
+	&.green {
+		background-color: $green;
+		border: solid 8px darken($green, 5%);
+		color: $white;
+	}
+	&.yellow {
+		background-color: $yellow;
+		border: solid 8px darken($yellow, 5%);
+		color: $white;
+	}
+	&.red {
+		background-color: $red;
+		border: solid 8px darken($red, 5%);
+		color: $white;
+	}
+	&.blue {
+		background-color: $blue;
+		border: solid 8px darken($blue, 5%);
+		color: $white;
+	}
+
+	.question {
+		font-family: $font_title;
+		font-size: 3em;
+		line-height: 1em;
+		padding-top: 1em;
+		width: 100%;
+		text-align: center;
+		text-shadow: -3px 3px rgba(0, 0, 0, .1);
+	}
+}
