@@ -1,24 +1,37 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
-	    <meta charset="utf-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	    <meta http-equiv="Cache-control" content="public">
-	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8">
+
 		<title>{{ site.title }}</title>
-    	<meta name="description" content="{{ site.description }}">
-		<link href="css/main.css" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i|Montserrat" rel="stylesheet">
+
+		<meta name="description" content="{{ site.description }}">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
+
+		<link rel="canonical" href="{{ site.baseurl }}/en/">
+		<link rel="alternate" hreflang="fr" href="{{ site.baseurl }}/fr/">
 	</head>
 	<body>
-		<header>
-			<h1><a href="#">Hallelujah</a></h1>
-			<nav>
-				<a href="#">Green</a>
-				<a href="#">Orange</a>
-				<a href="#">Yellow</a>
-				<span><a href="#">Fr</a> | <b>En</b></span>
-			</nav>
-		</header>
-		<main>
+		<header id="topbar">
+			<div class="container">
+				<h1>
+					<a href="#0">
+						{{ site.title }}
+					</a>
+				</h1>
 
+				<nav>
+					<ul aria-label="Main pages">
+						<li><a href="#0">About</a></li>
+					</ul>
+
+					<ul aria-label="Language">
+						<li><a href="#0" hreflang="fr">FR</a></li>
+						<li><span>EN</span></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<div id="page">

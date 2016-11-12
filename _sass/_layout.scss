@@ -1,0 +1,30 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+}
+
+.container {
+	max-width: $size-desktop;
+	margin: 0 auto;
+
+	@media (max-width: #{$size-phablet}) {
+		max-width: $size-smartphone;
+	}
+	@media (max-width: #{$size-tablet}) {
+		max-width: $size-phablet;
+	}
+	@media (max-width: #{$size-laptop}) {
+		max-width: $size-tablet;
+	}
+	@media (max-width: #{$size-desktop}) {
+		max-width: $size-laptop;
+	}
+}
+
+@import 'widgets/_topbar.scss';

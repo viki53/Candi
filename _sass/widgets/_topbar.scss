@@ -1,0 +1,40 @@
+#topbar {
+	background-color: $topbar-bg;
+	color: $topbar-color;
+
+	& > .container {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+
+		& > h1 {
+			align-self: flex-start;
+			margin: 0;
+		}
+
+		& > nav {
+			align-self: flex-end;
+			display: flex;
+			margin: 0;
+
+			& > ul {
+				display: flex;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+
+				& > li {
+					margin: 0;
+					padding: 0;
+
+					& > a,
+					& > span {
+						display: block;
+						padding: 10px 5px;
+					}
+				}
+			}
+		}
+	}
+}
