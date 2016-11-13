@@ -1,4 +1,15 @@
+@import '_variables.scss';
+
+@import '_layout.scss';
+@import '_text.scss';
+
 body {
 	color: $page-color;
 	background-color: $page-bg;
 }
+
+@import '_layout.scss';
+
+@import 'widgets/_topbar.scss';
+
+@import 'widgets/_chatbox.scss';

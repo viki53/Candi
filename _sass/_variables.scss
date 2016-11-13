@@ -11,16 +11,28 @@ $page-color: #424242;
 $topbar-bg: #53779b;
 $topbar-color: #fff;
 
+$message-bg: #fff;
+$message-color: $page-color;
+$message-alternate-bg: $topbar-bg;
+$message-alternate-color: #fff;
+
 // ====================================================
 // Fonts
 // ====================================================
 
 $page-font-family: Helvetica, sans-serif;
 $page-font-size: 16px;
-$title-font: #424242;
 
 // ====================================================
-// Dimensions
+// Elements sizes
+// ====================================================
+
+$topbar-height: 46px;
+
+$chat-form-height: 60px;
+
+// ====================================================
+// Screen dimensions
 // ====================================================
 
 $size-smartphone: 22rem;

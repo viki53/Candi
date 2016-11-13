@@ -1,8 +1,11 @@
 #topbar {
+	height: $topbar-height;
 	background-color: $topbar-bg;
 	color: $topbar-color;
 
 	& > .container {
+		display: -webkit-flex;
+		display: -ms-flex;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
@@ -15,10 +18,14 @@
 
 		& > nav {
 			align-self: flex-end;
+			display: -webkit-flex;
+			display: -ms-flex;
 			display: flex;
 			margin: 0;
 
 			& > ul {
+				display: -webkit-flex;
+				display: -ms-flex;
 				display: flex;
 				margin: 0;
 				padding: 0;
