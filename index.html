@@ -5,40 +5,24 @@
 
 <h1>Hello</h1>
 
-<form class="card yellow">
-	<label class="question">This is an awesome question</label>
-	<ul class="answers">
-		<li>Yes</li>
-		<li>No</li>
-		<li>La réponse D</li>
-	</ul>
-</form>
+<div id="chat-box">
+	<ul id="chat-messages"></ul>
+	<form action="#0" id="chat-form"></form>
+</div>
 
-<form class="card green">
-	<label class="question">Is this an awesome question?</label>
-	<ul class="answers">
-		<li>Yes</li>
-		<li>No</li>
-		<li>La réponse D</li>
-	</ul>
-</form>
+{% raw  %}
+<template id="tpl-question">
+	<li class="message">
+		{{label}}
+	</li>
+</template>
 
-<form class="card red">
-	<label class="question">This is an awesome question</label>
-	<ul class="answers">
-		<li>Yes</li>
-		<li>No</li>
-		<li>La réponse D</li>
+<template id="tpl-answer-radio">
+	<ul>
+		{{#each choices}}
+		<li></li>
 	</ul>
-</form>
-
-<form class="card blue">
-	<label class="question">This is an awesome question</label>
-	<ul class="answers">
-		<li>Yes</li>
-		<li>No</li>
-		<li>La réponse D</li>
-	</ul>
-</form>
+</template>
+{% endraw %}
 
 {% include footer.html %}
