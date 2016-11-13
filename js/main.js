@@ -27,10 +27,12 @@ class QuestionManager {
 				if (question_trad.id === question.id) {
 					question.label = question_trad.label;
 
-					for (let choice of question.choices) {
-						for (let choice_trad of question_trad.choices) {
-							if (choice_trad.id === choice.id) {
-								choice.label = choice_trad.label;
+					if (question.choices) {
+						for (let choice of question.choices) {
+							for (let choice_trad of question_trad.choices) {
+								if (choice_trad.id === choice.id) {
+									choice.label = choice_trad.label;
+								}
 							}
 						}
 					}

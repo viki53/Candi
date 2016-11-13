@@ -1,22 +1,22 @@
 questions:
   - id: int001
-    label: Coucou ! Moi c'est Candi !
+    label: Bonjour ! Moi c'est Candi !
   - id: int002
     label: J'aimerais bien en savoir plus sur les religions, et leur rôle dans le monde moderne.
   - id: int003
-    label: Est-ce que tu peux m'aider ? J'ai quelques questions à te poser, il y en a pour moins de 5 min.
+    label: Est-ce que tu peux m'aider ? J'ai quelques questions à te poser, il y en a pour moins de 5 min.
     choices:
       - id: yes1
-        label: Bien sur !
+        label: Bien sûr !
       - id: yes2
-        label: C'est parti !
+        label: C'est parti !
       - id: yes3
-        label: Avec plaisir !
+        label: Avec plaisir !
 
   - id: pro001
-    label: Génial ! Avant de commencer, j'ai besoin d'en savoir un peu plus sur toi. Mon enquête est anonyme, mais ces infos rendront les résultats plus intéressants pour toi comme pour moi.
+    label: Génial ! Avant de commencer, j'ai besoin d'en savoir un peu plus sur toi. Mon enquête est anonyme, mais ces infos rendront les résultats plus intéressants pour toi comme pour moi.
   - id: pro002
-    label: Vous considérez-vous comme appartenant à une religion ?
+    label: Quelle religion suis-tu ?
     choices:
       - key: christianity
         value: Le Christianisme
