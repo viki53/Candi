@@ -15,18 +15,25 @@
 	</li>
 </template>
 
-<template id="tpl-answer">
+<template id="tpl-answer-radio">
 	<li class="message user">
 		{{label}}
 	</li>
 </template>
+<template id="tpl-answer-checkbox">
+	<li class="message user">
+		{{#each choices}}
+		{{label}}
+		{{/each}}
+	</li>
+</template>
 
-<template id="tpl-answer-radio">
+<template id="tpl-form-answer-radio">
 	<ul class="form-answer-radio">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
+			<input type="radio" name="question-{{../id}}" value="{{id}}">
 			<label>
-				<input type="radio" name="question-{{../id}}" value="{{id}}">
 				{{label}}
 			</label>
 		</li>
@@ -34,12 +41,12 @@
 	</ul>
 </template>
 
-<template id="tpl-answer-checkbox">
+<template id="tpl-form-answer-checkbox">
 	<ul class="form-answer-checkbox">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
+			<input type="checkbox" name="question-{{../id}}[]" value="{{id}}">
 			<label>
-				<input type="checkbox" name="question-{{../id}}[]" value="{{id}}">
 				{{label}}
 			</label>
 		</li>
@@ -48,4 +55,9 @@
 </template>
 {% endraw %}
 
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const MANAGER = new QuestionManager(QUESTIONS);
+	}, false);
+</script>
 {% include footer.html %}

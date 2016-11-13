@@ -1,0 +1,12 @@
+- id: pro001
+  category: profile
+  choices: countrylist
+  type: countrylist
+- id: pro002
+  category: profile
+  choices: religionlist
+  type: radio
+- id: q1
+  category: general
+  choices: yesNo
+  type: bool

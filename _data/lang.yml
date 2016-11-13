@@ -1,0 +1,29 @@
+fr:
+  questions:
+    pro001: Dans quel pays vivez-vous ?
+    pro002: Vous considérez vous comme appartenant à une religion ?
+    q1: Est-ce que la religion est un sujet qui vous préoccupe ?
+  choices:
+    yesNo:
+      - key: yes
+        value: Oui
+      - key: no
+        value: Non
+    religionlist:
+      - key: christianity
+        value: Le Christianisme
+      - key: islam
+        value: L'Islam
+      - key: hinduism
+        value: L'Hindouisme
+      - key: buddhism
+        value: Le Bouddhisme
+      - key: irreligion
+        value: Sans religion / L'Irréligion
+      - key: other
+        value: Autre religion, croyance ou spiritualité
+    countrylist:
+      - key: france
+        value: France
+      - key: sweden
+        value: Suède
