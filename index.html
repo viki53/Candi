@@ -10,7 +10,7 @@
 	<form action="#0" id="chat-form"></form>
 </div>
 
-{% raw  %}
+{% raw %}
 <template id="tpl-question">
 	<li class="message">
 		{{label}}
@@ -20,7 +20,8 @@
 <template id="tpl-answer-radio">
 	<ul>
 		{{#each choices}}
-		<li></li>
+		<li data-id="{{id}}">{{label}}</li>
+		{{/each}}
 	</ul>
 </template>
 {% endraw %}
