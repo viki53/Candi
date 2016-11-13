@@ -133,12 +133,21 @@ class QuestionManager {
 
 	prepareRadioAnswers(question) {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
+			let input = label.parentNode.querySelector('input[type="radio"]');
+
 			if (question.choices[i].id === this._answers[question.id]) {
-				label.classList.add('highlight');
+				input.focus();
 			}
+
 			label.addEventListener('click', (event) => {
 				event.preventDefault();
 				this.answerQuestion(question, question.choices[i]);
+			}, false);
+			input.addEventListener('keypress', (event) => {
+				event.preventDefault();
+				if (event.key == 'Enter') {
+					this.answerQuestion(question, question.choices[i]);
+				}
 			}, false);
 		}, this);
 	}
