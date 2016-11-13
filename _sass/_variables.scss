@@ -12,6 +12,7 @@ $topbar-bg: #53779b;
 $topbar-color: #fff;
 
 $message-bg: #fff;
+$message-shadow-color: transparentize($page-color, .9);
 $message-color: $page-color;
 $message-alternate-bg: $topbar-bg;
 $message-alternate-color: #fff;

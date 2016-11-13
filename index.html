@@ -25,8 +25,8 @@
 	<ul class="form-answer-radio">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
+			<input type="radio" name="question-{{../id}}" value="{{id}}">
 			<label>
-				<input type="radio" name="question-{{../id}}" value="{{id}}">
 				{{label}}
 			</label>
 		</li>
@@ -38,8 +38,8 @@
 	<ul class="form-answer-checkbox">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
+			<input type="checkbox" name="question-{{../id}}[]" value="{{id}}">
 			<label>
-				<input type="checkbox" name="question-{{../id}}[]" value="{{id}}">
 				{{label}}
 			</label>
 		</li>

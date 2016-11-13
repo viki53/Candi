@@ -3,20 +3,51 @@ const $$ = document.querySelectorAll.bind(document);
 const QUESTIONS = [
 	{
 		id: 'q1',
-		label: 'Test question',
+		label: 'Are you religious?',
 		type: 'radio',
 		choices: [
 			{
 				id: 'q1a1',
-				label: '#1'
+				label: 'Yes'
 			},
 			{
 				id: 'q1a2',
-				label: 'Number two'
+				label: 'No'
+			}
+		]
+	},
+	{
+		id: 'q2',
+		label: 'What do you believe in?',
+		type: 'checkbox',
+		choices: [
+			{
+				id: 'q2a1',
+				label: 'Nothing'
 			},
 			{
-				id: 'q1a3',
-				label: 'Numero tres'
+				id: 'q2a2',
+				label: 'God'
+			},
+			{
+				id: 'q2a3',
+				label: 'Allah'
+			},
+			{
+				id: 'q2a4',
+				label: 'Mother Nature'
+			},
+			{
+				id: 'q2a5',
+				label: 'Satan'
+			},
+			{
+				id: 'q2a6',
+				label: 'Ganesh'
+			},
+			{
+				id: 'q2a7',
+				label: 'Pasta'
 			}
 		]
 	}
@@ -52,7 +83,7 @@ class QuestionManager {
 		console.log('displayCurrentQuestion');
 		let question = this._questions[this._currentIndex];
 
-		$('#chat-messages').innerHTML = TPL_QUESTION(question);
+		$('#chat-messages').innerHTML += TPL_QUESTION(question);
 
 		if (!TPL_ANSWERS[question.type]) {
 			return this.nextQuestion();
