@@ -25,6 +25,54 @@ class QuestionManager {
 		this.ready = false;
 		this._currentIndex = -1; // Current question index
 
+		this._firebaseConfig = {
+			apiKey: 'AIzaSyB2C2CuzCLC5yhzMI99Gau3Nx0py5O3v_o',
+			authDomain: 'candi-ab7d5.firebaseapp.com',
+			databaseURL: 'https://candi-ab7d5.firebaseio.com',
+			storageBucket: 'candi-ab7d5.appspot.com',
+			messagingSenderId: '594186006245'
+		};
+
+		Promise.all([
+			this._initFirebase(),
+			this._initQuestions(questions, translations)
+		])
+		.then(() => {
+			this.ready = true;
+			this.chat_messages.innerHTML = '';
+
+			this.nextQuestion();
+		})
+		.catch((error) => {
+			console.error(error.code, error.message);
+		});
+	}
+
+	_initFirebase() {
+		return new Promise((resolve, reject) => {
+			firebase.initializeApp(this._firebaseConfig);
+
+			firebase.auth().onAuthStateChanged((_user) => {
+				if (_user && _user.uid) {
+					this.userId = _user.uid;
+
+					if (!this.ready) {
+						firebase.database().ref('/answers/' + this.userId).once('value', (data) => {
+							this._answers = data.val() || {};
+
+							resolve();
+						});
+					}
+				}
+				else {
+					firebase.auth().signInAnonymously()
+					.catch(reject);
+				}
+			});
+		})
+	}
+
+	_initQuestions(questions, translations) {
 		for (let question of questions) {
 			for (let question_trad of translations.questions) {
 				if (question_trad.id === question.id) {
@@ -43,38 +91,6 @@ class QuestionManager {
 			}
 		}
 		this._questions = questions;
-
-		this._firebaseConfig = {
-			apiKey: 'AIzaSyB2C2CuzCLC5yhzMI99Gau3Nx0py5O3v_o',
-			authDomain: 'candi-ab7d5.firebaseapp.com',
-			databaseURL: 'https://candi-ab7d5.firebaseio.com',
-			storageBucket: 'candi-ab7d5.appspot.com',
-			messagingSenderId: '594186006245'
-		};
-
-		firebase.initializeApp(this._firebaseConfig);
-
-		firebase.auth().onAuthStateChanged((_user) => {
-			if (_user && _user.uid) {
-				this.userId = _user.uid;
-
-				if (!this.ready) {
-					this.ready = true;
-					firebase.database().ref('/answers/' + this.userId).once('value', (data) => {
-						this._answers = data.val() || {};
-
-						this.nextQuestion();
-					});
-				}
-			}
-			else {
-				firebase.auth().signInAnonymously()
-				.catch((error) => {
-					console.error(error.code, error.message);
-				});
-				return;
-			}
-		});
 	}
 
 	scrollToBottom() {
@@ -90,7 +106,6 @@ class QuestionManager {
 
 		this.displayCurrentQuestion();
 	}
-
 	previousQuestion() {
 		if (!this._questions[this._currentIndex - 1]) {
 			throw new RangeError('No previous question');
