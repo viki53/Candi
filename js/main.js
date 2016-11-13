@@ -25,6 +25,54 @@ class QuestionManager {
 		this.ready = false;
 		this._currentIndex = -1; // Current question index
 
+		this._firebaseConfig = {
+			apiKey: 'AIzaSyB2C2CuzCLC5yhzMI99Gau3Nx0py5O3v_o',
+			authDomain: 'candi-ab7d5.firebaseapp.com',
+			databaseURL: 'https://candi-ab7d5.firebaseio.com',
+			storageBucket: 'candi-ab7d5.appspot.com',
+			messagingSenderId: '594186006245'
+		};
+
+		Promise.all([
+			this._initFirebase(),
+			this._initQuestions(questions, translations)
+		])
+		.then(() => {
+			this.ready = true;
+			this.chat_messages.innerHTML = '';
+
+			this.nextQuestion();
+		})
+		.catch((error) => {
+			console.error(error.code, error.message);
+		});
+	}
+
+	_initFirebase() {
+		return new Promise((resolve, reject) => {
+			firebase.initializeApp(this._firebaseConfig);
+
+			firebase.auth().onAuthStateChanged((_user) => {
+				if (_user && _user.uid) {
+					this.userId = _user.uid;
+
+					if (!this.ready) {
+						firebase.database().ref('/answers/' + this.userId).once('value', (data) => {
+							this._answers = data.val() || {};
+
+							resolve();
+						});
+					}
+				}
+				else {
+					firebase.auth().signInAnonymously()
+					.catch(reject);
+				}
+			});
+		})
+	}
+
+	_initQuestions(questions, translations) {
 		for (let question of questions) {
 			for (let question_trad of translations.questions) {
 				if (question_trad.id === question.id) {
@@ -43,38 +91,10 @@ class QuestionManager {
 			}
 		}
 		this._questions = questions;
+	}
 
-		this._firebaseConfig = {
-			apiKey: 'AIzaSyB2C2CuzCLC5yhzMI99Gau3Nx0py5O3v_o',
-			authDomain: 'candi-ab7d5.firebaseapp.com',
-			databaseURL: 'https://candi-ab7d5.firebaseio.com',
-			storageBucket: 'candi-ab7d5.appspot.com',
-			messagingSenderId: '594186006245'
-		};
-
-		firebase.initializeApp(this._firebaseConfig);
-
-		firebase.auth().onAuthStateChanged((_user) => {
-			if (_user && _user.uid) {
-				this.userId = _user.uid;
-
-				if (!this.ready) {
-					this.ready = true;
-					firebase.database().ref('/answers/' + this.userId).once('value', (data) => {
-						this._answers = data.val() || {};
-
-						this.nextQuestion();
-					});
-				}
-			}
-			else {
-				firebase.auth().signInAnonymously()
-				.catch((error) => {
-					console.error(error.code, error.message);
-				});
-				return;
-			}
-		});
+	scrollToBottom() {
+		this.chat_messages.scrollTop = this.chat_messages.scrollHeight;
 	}
 
 	nextQuestion() {
@@ -86,7 +106,6 @@ class QuestionManager {
 
 		this.displayCurrentQuestion();
 	}
-
 	previousQuestion() {
 		if (!this._questions[this._currentIndex - 1]) {
 			throw new RangeError('No previous question');
@@ -103,6 +122,7 @@ class QuestionManager {
 		this.chat_messages.innerHTML += TPL_QUESTION(question);
 
 		if (!TPL_FORM_ANSWERS[question.type]) {
+			this.scrollToBottom();
 			return this.nextQuestion();
 		}
 		else {
@@ -123,32 +143,45 @@ class QuestionManager {
 			break;
 		}
 
-		this.chat_messages.scrollTop = this.chat_messages.scrollHeight;
+		this.scrollToBottom();
 	}
 
 	prepareRadioAnswers(question) {
-		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
+		Array.prototype.forEach.call($$('#chat-form label'), (label, i) => {
+			let input = label.parentNode.querySelector('input[type="radio"]');
+
 			if (question.choices[i].id === this._answers[question.id]) {
-				label.classList.add('highlight');
+				input.focus();
 			}
+
 			label.addEventListener('click', (event) => {
 				event.preventDefault();
 				this.answerQuestion(question, question.choices[i]);
 			}, false);
-		}, this);
+			input.addEventListener('keypress', (event) => {
+				event.preventDefault();
+				if (event.key == 'Enter') {
+					this.answerQuestion(question, question.choices[i]);
+				}
+			}, false);
+		});
 	}
 	prepareAutocompleteAnswers(question) {
+		let input = this.chat_form.querySelector('input[type="text"]');
+
 		let answerAutocomplete = (event) => {
 			event.preventDefault();
-			let input = $('#chat-form input[type="text"]').value;
+			let value = input.value;
 
 			for (let choice of question.choices) {
-				if (choice.label === input) {
+				if (choice.label === value) {
 					this.answerQuestion(question, choice);
 					this.chat_form.removeEventListener('submit', answerAutocomplete);
 				}
 			}
 		};
+
+		input.focus();
 
 		if (this._answers[question.id]) {
 			for (var choice of question.choices) {
@@ -160,21 +193,86 @@ class QuestionManager {
 		this.chat_form.addEventListener('submit', answerAutocomplete, false);
 	}
 	prepareCheckboxAnswers(question) {
-		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
-			label.addEventListener('click', (event) => {
-				event.preventDefault();
+		let answers = [];
+
+		let previousAnswer = this._answers[question.id] || [];
+
+		let updateCheckboxCount = () => {
+			$('#form-answer-checkbox-count').textContent = answers.length + '/' + (question.max_choices || question.choices.length);
+		}
+		let answerCheckbox = (event) => {
+			this.answerQuestion(question, answers);
+			this.chat_form.removeEventListener('submit', answerCheckbox);
+		};
+
+		console.dir(TPL_ANSWERS.checkbox);
+
+		Array.prototype.forEach.call($$('#chat-form label'), (label, i) => {
+			let answer = question.choices[i];
+
+			let input = label.parentNode.querySelector('input[type="checkbox"]');
+
+			let index = previousAnswer.indexOf(answer.id);
+			if (index !== -1) {
+				input.checked = true;
+				answers.push(answer);
+			}
+
+			input.addEventListener('change', (event) => {
+				let index = answers.indexOf(answer);
+
+				if (!input.checked && index !== -1) {
+					answers.splice(index, 1);
+				}
+				else if (input.checked && answers.length < question.max_choices) {
+					answers.push(answer);
+				}
+				else {
+					input.checked = false;
+				}
+
+				updateCheckboxCount();
 			}, false);
-		}, this);
+		});
+
+		updateCheckboxCount();
+
+		this.chat_form.addEventListener('submit', answerCheckbox, false);
 	}
 
 	answerQuestion(question, answer) {
-		firebase.database().ref('/answers/' + this.userId).update({
-			[question.id]: answer.id
-		});
+		if (Array.isArray(answer)) {
+			let ids = [];
+			let labels = [];
 
-		this._answers[question.id] = question.lastAnswer = answer.id;
+			for (let ans of answer) {
+				ids.push(ans.id);
+				labels.push(ans.label);
+			}
 
-		this.chat_messages.innerHTML += TPL_ANSWERS[question.type](answer);
-		return this.nextQuestion();
+			firebase.database().ref('/answers/' + this.userId).update({
+				[question.id]: ids
+			});
+
+			this._answers[question.id] = ids;
+
+			this.chat_messages.innerHTML += TPL_ANSWERS[question.type]({
+				answers: answer
+			});
+		}
+		else {
+			firebase.database().ref('/answers/' + this.userId).update({
+				[question.id]: answer.id
+			});
+
+			this._answers[question.id] = answer.id;
+
+			this.chat_messages.innerHTML += TPL_ANSWERS[question.type](answer);
+		}
+
+		this.chat_form.innerHTML = '';
+		this.scrollToBottom();
+
+		this.nextQuestion();
 	}
 };

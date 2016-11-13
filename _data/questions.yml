@@ -14,13 +14,15 @@
   category: profile
 - id: pro002
   category: profile
-  type: radio
+  type: checkbox
+  max_choices: 4
   choices:
     - id: christianity
     - id: islam
     - id: hinduism
     - id: buddhism
-    - id: irreligion
+    - id: atheist
+    - id: agnostic
     - id: other
 - id: pro003
   category: profile
@@ -46,3 +48,5 @@
     - id: 2
     - id: 1
     - id: 0
+- id: out001
+  category: outro

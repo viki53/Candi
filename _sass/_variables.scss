@@ -10,11 +10,12 @@ $page-color: #ffffff;
 
 $topbar-bg: #f2385a;
 $topbar-color: #fff;
+$topbar-link-bg-hover: darken($topbar-bg, 15%);
 
 $message-bg: #fff;
-$message-shadow-color: transparentize($page-color, .9);
 $message-color: #424242;
-$message-alternate-bg: #F5A503;
+$message-shadow-color: transparentize($message-color, .9);
+$message-alternate-bg: #f5a503;
 $message-alternate-color: #fff;
 
 // ====================================================
