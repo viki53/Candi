@@ -70,6 +70,23 @@ class QuestionManager {
 		this._currentIndex = -1; // Current question index
 		this._questions = questions;
 
+		this._firebaseConfig = {
+			apiKey: 'AIzaSyB2C2CuzCLC5yhzMI99Gau3Nx0py5O3v_o',
+			authDomain: 'candi-ab7d5.firebaseapp.com',
+			databaseURL: 'https://candi-ab7d5.firebaseio.com',
+			storageBucket: 'candi-ab7d5.appspot.com',
+			messagingSenderId: '594186006245'
+		};
+
+		firebase.initializeApp(this._firebaseConfig);
+
+		this.userId = localStorage.getItem('userId');
+
+		if (!this.userId) {
+			this.userId = firebase.database().ref('/answers').push().key;
+			localStorage.setItem('userId', this.userId);
+		}
+
 		this.nextQuestion();
 	}
 
@@ -125,6 +142,11 @@ class QuestionManager {
 
 	answerQuestion(question, answer) {
 		console.info('Answered question "%s" with "%s"', question.label, answer.label);
+
+		firebase.database().ref('/answers/' + this.userId).update({
+			[question.id]: answer.id
+		});
+
 		$('#chat-messages').innerHTML += TPL_ANSWERS[question.type](answer);
 		return this.nextQuestion();
 	}
