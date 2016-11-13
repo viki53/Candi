@@ -90,7 +90,6 @@
 					border: 2px solid $message-bg;
 					border-radius: 10px;
 					border-bottom-right-radius: 0;
-					box-shadow: 1px 2px 4px $message-shadow-color;
 					cursor: pointer;
 
 					&:active {
@@ -126,7 +125,6 @@
 				border-color: $message-bg;
 				border-radius: 10px;
 				border-bottom-right-radius: 0;
-				box-shadow: 1px 2px 4px $message-shadow-color;
 			}
 			button {
 				flex: 1 1 30px;
