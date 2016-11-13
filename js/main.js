@@ -23,7 +23,6 @@ class QuestionManager {
 		this._currentIndex = -1; // Current question index
 
 		for (let question of questions) {
-			console.dir(question);
 			for (let question_trad of translations.questions) {
 				if (question_trad.id === question.id) {
 					question.label = question_trad.label;
@@ -37,8 +36,6 @@ class QuestionManager {
 					}
 				}
 			}
-			console.dir(question);
-			console.log('----------');
 		}
 		this._questions = questions;
 
@@ -58,7 +55,12 @@ class QuestionManager {
 
 				if (!this.ready) {
 					this.ready = true;
-					this.nextQuestion();
+					firebase.database().ref('/answers/' + this.userId).once('value', (data) => {
+						this._answers = data.val() || {};
+						console.dir(this._answers);
+
+						this.nextQuestion();
+					});
 				}
 			}
 			else {
@@ -74,10 +76,21 @@ class QuestionManager {
 	nextQuestion() {
 		console.log('nextQuestion');
 		if (!this._questions[this._currentIndex + 1]) {
-			throw new RangeError('No more questions');
+			throw new RangeError('No next question');
 		}
 
-		this._currentIndex++; // Increase current question index
+		this._currentIndex++;
+
+		this.displayCurrentQuestion();
+	}
+
+	previousQuestion() {
+		console.log('nextQuestion');
+		if (!this._questions[this._currentIndex - 1]) {
+			throw new RangeError('No previous question');
+		}
+
+		this._currentIndex--;
 
 		this.displayCurrentQuestion();
 	}
@@ -92,6 +105,8 @@ class QuestionManager {
 			return this.nextQuestion();
 		}
 		else {
+			console.log(JSON.stringify(question, null, '\t'));
+
 			$('#chat-form').innerHTML = TPL_FORM_ANSWERS[question.type](question);
 		}
 
@@ -112,6 +127,10 @@ class QuestionManager {
 
 	prepareRadioAnswers(question) {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
+			console.log(question.choices[i].id, this._answers[question.id]);
+			if (question.choices[i].id === this._answers[question.id]) {
+				label.classList.add('highlight');
+			}
 			label.addEventListener('click', (event) => {
 				event.preventDefault();
 				this.answerQuestion(question, question.choices[i]);
@@ -131,6 +150,14 @@ class QuestionManager {
 				}
 			}
 		};
+
+		if (this._answers[question.id]) {
+			for (var choice of question.choices) {
+				if (choice.id === this._answers[question.id]) {
+					$('#chat-form input[type="text"]').value = choice.label;
+				}
+			}
+		}
 		$('#chat-form').addEventListener('submit', answerAutocomplete, false);
 	}
 	prepareCheckboxAnswers(question) {
@@ -148,6 +175,8 @@ class QuestionManager {
 		firebase.database().ref('/answers/' + this.userId).update({
 			[question.id]: answer.id
 		});
+
+		this._answers[question.id] = question.lastAnswer = answer.id;
 
 		$('#chat-messages').innerHTML += TPL_ANSWERS[question.type](answer);
 		return this.nextQuestion();

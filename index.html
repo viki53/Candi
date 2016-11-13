@@ -80,12 +80,13 @@
 	{% assign questions = site.data.questions %}
 	{% assign locale = "fr" %}
 	{% assign translations = site.data.lang[locale] %}
+	var MANAGER;
 
 	document.addEventListener('DOMContentLoaded', function() {
 		const QUESTIONS = {{questions | jsonify}};
 		const TRANSLATIONS = {{translations | jsonify}};
 
-		const MANAGER = new QuestionManager(QUESTIONS, TRANSLATIONS);
+		MANAGER = new QuestionManager(QUESTIONS, TRANSLATIONS);
 	}, false);
 </script>
 {% include footer.html %}
