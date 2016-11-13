@@ -20,7 +20,8 @@
     - id: islam
     - id: hinduism
     - id: buddhism
-    - id: irreligion
+    - id: atheist
+    - id: agnostic
     - id: other
 - id: pro003
   category: profile

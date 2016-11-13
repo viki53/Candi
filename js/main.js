@@ -133,27 +133,40 @@ class QuestionManager {
 
 	prepareRadioAnswers(question) {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
+			let input = label.parentNode.querySelector('input[type="radio"]');
+
 			if (question.choices[i].id === this._answers[question.id]) {
-				label.classList.add('highlight');
+				input.focus();
 			}
+
 			label.addEventListener('click', (event) => {
 				event.preventDefault();
 				this.answerQuestion(question, question.choices[i]);
 			}, false);
+			input.addEventListener('keypress', (event) => {
+				event.preventDefault();
+				if (event.key == 'Enter') {
+					this.answerQuestion(question, question.choices[i]);
+				}
+			}, false);
 		}, this);
 	}
 	prepareAutocompleteAnswers(question) {
+		let input = this.chat_form.querySelector('input[type="text"]');
+
 		let answerAutocomplete = (event) => {
 			event.preventDefault();
-			let input = $('#chat-form input[type="text"]').value;
+			let value = input.value;
 
 			for (let choice of question.choices) {
-				if (choice.label === input) {
+				if (choice.label === value) {
 					this.answerQuestion(question, choice);
 					this.chat_form.removeEventListener('submit', answerAutocomplete);
 				}
 			}
 		};
+
+		input.focus();
 
 		if (this._answers[question.id]) {
 			for (var choice of question.choices) {
