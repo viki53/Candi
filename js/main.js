@@ -19,6 +19,9 @@ const TPL_FORM_ANSWERS = {
 
 class QuestionManager {
 	constructor(questions, translations) {
+		this.chat_box = $('#chat-box');
+		this.chat_messages = $('#chat-messages');
+		this.chat_form = $('#chat-form');
 		this.ready = false;
 		this._currentIndex = -1; // Current question index
 
@@ -27,10 +30,12 @@ class QuestionManager {
 				if (question_trad.id === question.id) {
 					question.label = question_trad.label;
 
-					for (let choice of question.choices) {
-						for (let choice_trad of question_trad.choices) {
-							if (choice_trad.id === choice.id) {
-								choice.label = choice_trad.label;
+					if (question.choices) {
+						for (let choice of question.choices) {
+							for (let choice_trad of question_trad.choices) {
+								if (choice_trad.id === choice.id) {
+									choice.label = choice_trad.label;
+								}
 							}
 						}
 					}
@@ -95,13 +100,13 @@ class QuestionManager {
 	displayCurrentQuestion() {
 		let question = this._questions[this._currentIndex];
 
-		$('#chat-messages').innerHTML += TPL_QUESTION(question);
+		this.chat_messages.innerHTML += TPL_QUESTION(question);
 
 		if (!TPL_FORM_ANSWERS[question.type]) {
 			return this.nextQuestion();
 		}
 		else {
-			$('#chat-form').innerHTML = TPL_FORM_ANSWERS[question.type](question);
+			this.chat_form.innerHTML = TPL_FORM_ANSWERS[question.type](question);
 		}
 
 		switch (question.type) {
@@ -117,6 +122,8 @@ class QuestionManager {
 				this.prepareCheckboxAnswers(question);
 			break;
 		}
+
+		this.chat_messages.scrollTop = this.chat_messages.scrollHeight;
 	}
 
 	prepareRadioAnswers(question) {
@@ -138,7 +145,7 @@ class QuestionManager {
 			for (let choice of question.choices) {
 				if (choice.label === input) {
 					this.answerQuestion(question, choice);
-					$('#chat-form').removeEventListener('submit', answerAutocomplete);
+					this.chat_form.removeEventListener('submit', answerAutocomplete);
 				}
 			}
 		};
@@ -150,7 +157,7 @@ class QuestionManager {
 				}
 			}
 		}
-		$('#chat-form').addEventListener('submit', answerAutocomplete, false);
+		this.chat_form.addEventListener('submit', answerAutocomplete, false);
 	}
 	prepareCheckboxAnswers(question) {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
@@ -167,7 +174,7 @@ class QuestionManager {
 
 		this._answers[question.id] = question.lastAnswer = answer.id;
 
-		$('#chat-messages').innerHTML += TPL_ANSWERS[question.type](answer);
+		this.chat_messages.innerHTML += TPL_ANSWERS[question.type](answer);
 		return this.nextQuestion();
 	}
 };
