@@ -1,20 +1,20 @@
-- id: pro001
-  category: profile
+- id: int001
+  category: intro
+- id: int002
+  category: intro
+- id: int003
+  category: intro
   type: radio
   choices:
-    - id: yes
-    - id: no
+    - id: yes1
+    - id: yes2
+    - id: yes3
+
+- id: pro001
+  category: profile
 - id: pro002
   category: profile
-  type: autocomplete
-  choices:
-    - id: fr
-    - id: se
-    - id: ch
-    - id: ie
-- id: q1
-  category: general
-  type: checkbox
+  type: radio
   choices:
     - id: christianity
     - id: islam
@@ -22,3 +22,27 @@
     - id: buddhism
     - id: irreligion
     - id: other
+- id: pro003
+  category: profile
+  type: radio
+  choices:
+    - id: girl
+    - id: boy
+    - id: bot
+- id: pro004
+  category: profile
+  type: autocomplete
+  choices:
+    - id: fr
+    - id: se
+    - id: ch
+    - id: ie
+
+- id: q1
+  category: general
+  type: radio
+  choices:
+    - id: 3
+    - id: 2
+    - id: 1
+    - id: 0

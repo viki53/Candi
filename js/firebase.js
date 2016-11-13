@@ -20,6 +20,10 @@ firebase.auth().onAuthStateChanged(function(_user) {
 	}
 })
 
+firebase.database().ref('/answers/' + user).once('value', function(datasnapshot){
+	var answers = datasnapshot.val()
+})
+
 var answers = document.querySelectorAll('.answers li')
 
 for (var i = 0; i < answers.length; i++) {
