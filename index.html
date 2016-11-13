@@ -3,8 +3,6 @@
 
 {% include head.html %}
 
-<h1>Hello</h1>
-
 <div id="chat-box">
 	<ul id="chat-messages"></ul>
 	<form action="#0" id="chat-form"></form>
@@ -12,13 +10,19 @@
 
 {% raw %}
 <template id="tpl-question">
-	<li class="message">
+	<li class="message bot">
+		{{label}}
+	</li>
+</template>
+
+<template id="tpl-answer">
+	<li class="message user">
 		{{label}}
 	</li>
 </template>
 
 <template id="tpl-answer-radio">
-	<ul>
+	<ul class="form-answer-radio">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
 			<label>
@@ -31,7 +35,7 @@
 </template>
 
 <template id="tpl-answer-checkbox">
-	<ul>
+	<ul class="form-answer-checkbox">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
 			<label>
