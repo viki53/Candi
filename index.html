@@ -47,14 +47,14 @@
 </template>
 
 <template id="tpl-form-answer-autocomplete">
-	<div class="form-answer-autocomplete-options">
+	<div class="form-answer-autocomplete">
+		<button type="submit">OK</button>
 		<input type="text" list="question-{{id}}-datalist">
 		<datalist id="question-{{id}}-datalist">
 			{{#each choices}}
 			<option value="{{label}}"></option>
 			{{/each}}
 		</datalist>
-		<button type="submit">Confirm</button>
 	</div>
 </template>
 
