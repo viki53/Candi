@@ -14,7 +14,7 @@ questions:
       - id: se
         label: Suède
       - id: ch
-        label: Suède
+        label: Suisse
       - id: ie
         label: Irlande
   - id: q1

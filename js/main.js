@@ -119,17 +119,23 @@ class QuestionManager {
 		}, this);
 	}
 	prepareAutocompleteAnswers(question) {
-		Array.prototype.forEach.call($$('#chat-form button[type="submit"]'), function (label, i) {
-			label.addEventListener('click', (event) => {
-				event.preventDefault();
-				console.info('Clicked autocomplete', i);
-				this.answerQuestion(question, question.choices[i]);
-			}, false);
-		}, this);
+		let answerAutocomplete = (event) => {
+			event.preventDefault();
+			let input = $('#chat-form input[type="text"]').value;
+			console.info('Clicked autocomplete', input);
+
+			for (let choice of question.choices) {
+				if (choice.label === input) {
+					this.answerQuestion(question, choice);
+					$('#chat-form').removeEventListener('submit', answerAutocomplete);
+				}
+			}
+		};
+		$('#chat-form').addEventListener('submit', answerAutocomplete, false);
 	}
 	prepareCheckboxAnswers(question) {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
-			label.addEventListener('click', function (event) {
+			label.addEventListener('click', (event) => {
 				event.preventDefault();
 				console.info('Clicked checkbox', i);
 			}, false);
