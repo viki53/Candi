@@ -147,7 +147,7 @@ class QuestionManager {
 	}
 
 	prepareRadioAnswers(question) {
-		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
+		Array.prototype.forEach.call($$('#chat-form label'), (label, i) => {
 			let input = label.parentNode.querySelector('input[type="radio"]');
 
 			if (question.choices[i].id === this._answers[question.id]) {
@@ -164,7 +164,7 @@ class QuestionManager {
 					this.answerQuestion(question, question.choices[i]);
 				}
 			}, false);
-		}, this);
+		});
 	}
 	prepareAutocompleteAnswers(question) {
 		let input = this.chat_form.querySelector('input[type="text"]');
@@ -193,21 +193,79 @@ class QuestionManager {
 		this.chat_form.addEventListener('submit', answerAutocomplete, false);
 	}
 	prepareCheckboxAnswers(question) {
-		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
-			label.addEventListener('click', (event) => {
-				event.preventDefault();
+		let answers = [];
+
+		let previousAnswer = this._answers[question.id] || [];
+
+		let updateCheckboxCount = () => {
+			$('#form-answer-checkbox-count').textContent = answers.length + '/' + question.choices.length;
+		}
+		let answerCheckbox = (event) => {
+			this.answerQuestion(question, answers);
+			this.chat_form.removeEventListener('submit', answerCheckbox);
+		};
+
+		console.dir(TPL_ANSWERS.checkbox);
+
+		Array.prototype.forEach.call($$('#chat-form label'), (label, i) => {
+			let answer = question.choices[i];
+
+			let input = label.parentNode.querySelector('input[type="checkbox"]');
+
+			let index = previousAnswer.indexOf(answer.id);
+			if (index !== -1) {
+				input.checked = true;
+				answers.push(answer);
+			}
+
+			input.addEventListener('change', (event) => {
+				let index = answers.indexOf(answer);
+
+				if (!input.checked && index !== -1) {
+					answers.splice(index, 1);
+				}
+				else if (input.checked) {
+					answers.push(answer);
+				}
+
+				updateCheckboxCount();
 			}, false);
-		}, this);
+		});
+
+		updateCheckboxCount();
+
+		this.chat_form.addEventListener('submit', answerCheckbox, false);
 	}
 
 	answerQuestion(question, answer) {
-		firebase.database().ref('/answers/' + this.userId).update({
-			[question.id]: answer.id
-		});
+		if (Array.isArray(answer)) {
+			let ids = [];
+			let labels = [];
 
-		this._answers[question.id] = question.lastAnswer = answer.id;
+			for (let ans of answer) {
+				ids.push(ans.id);
+				labels.push(ans.label);
+			}
 
-		this.chat_messages.innerHTML += TPL_ANSWERS[question.type](answer);
+			firebase.database().ref('/answers/' + this.userId).update({
+				[question.id]: ids
+			});
+
+			this._answers[question.id] = ids;
+
+			this.chat_messages.innerHTML += TPL_ANSWERS[question.type]({
+				answers: answer
+			});
+		}
+		else {
+			firebase.database().ref('/answers/' + this.userId).update({
+				[question.id]: answer.id
+			});
+
+			this._answers[question.id] = answer.id;
+
+			this.chat_messages.innerHTML += TPL_ANSWERS[question.type](answer);
+		}
 
 		this.chat_form.innerHTML = '';
 		this.scrollToBottom();

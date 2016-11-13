@@ -32,9 +32,10 @@
 </template>
 <template id="tpl-answer-checkbox">
 	<li class="message user">
-		{{#each choices}}
+		{{#each answers~}}
+		{{~#if @index~}}, {{/if~}}
 		{{label}}
-		{{/each}}
+		{{~/each}}
 	</li>
 </template>
 
@@ -42,8 +43,8 @@
 	<ul class="form-answer-radio-choices">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
-			<input type="radio" name="question-{{../id}}" value="{{id}}">
-			<label>
+			<input type="radio" id="question-{{../id}}-answer-{{id}}-radio" name="question-{{../id}}" value="{{id}}">
+			<label for="question-{{../id}}-answer-{{id}}-radio">
 				{{label}}
 			</label>
 		</li>
@@ -67,15 +68,15 @@
 	<ul class="form-answer-checkbox-choices">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
-			<input type="checkbox" name="question-{{../id}}[]" value="{{id}}">
-			<label>
+			<input type="checkbox" id="question-{{../id}}-answer-{{id}}-checkbox" name="question-{{../id}}[]" value="{{id}}">
+			<label for="question-{{../id}}-answer-{{id}}-checkbox">
 				{{label}}
 			</label>
 		</li>
 		{{/each}}
 	</ul>
 	<div class="form-answer-checkbox-options">
-		<output id="form-answer-checkbox-count">0</output>/{{choices.length}}
+		<output id="form-answer-checkbox-count">0/{{choices.length}}</output>
 		<button type="submit">Confirm</button>
 	</div>
 </template>
