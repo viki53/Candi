@@ -19,15 +19,17 @@ questions:
     label: Quelle religion suis-tu ?
     choices:
       - id: christianity
-        label: Le Christianisme
+        label: Christianisme
       - id: islam
-        label: L'Islam
+        label: Islam
       - id: hinduism
-        label: L'Hindouisme
+        label: Hindouisme
       - id: buddhism
-        label: Le Bouddhisme
-      - id: irreligion
-        label: Sans religion / L'Irréligion
+        label: Bouddhisme
+      - id: atheist
+        label: Athée
+      - id: agnostic
+        label: Agnostique
       - id: other
         label: Autre religion, croyance ou spiritualité
   - id: pro003

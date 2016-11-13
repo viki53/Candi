@@ -63,6 +63,8 @@
 		&.form-answer-radio-choices,
 		&.form-answer-checkbox-choices {
 			& > li {
+				margin: 5px;
+
 				& > input[type="radio"] {
 					position: absolute;
 					top: -50px;
