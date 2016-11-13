@@ -19,6 +19,7 @@ const TPL_FORM_ANSWERS = {
 
 class QuestionManager {
 	constructor(questions, translations) {
+		this.ready = false;
 		this._currentIndex = -1; // Current question index
 
 		for (let question of questions) {
@@ -51,14 +52,23 @@ class QuestionManager {
 
 		firebase.initializeApp(this._firebaseConfig);
 
-		this.userId = localStorage.getItem('userId');
+		firebase.auth().onAuthStateChanged((_user) => {
+			if (_user && _user.uid) {
+				this.userId = _user.uid;
 
-		if (!this.userId) {
-			this.userId = firebase.database().ref('/answers').push().key;
-			localStorage.setItem('userId', this.userId);
-		}
-
-		this.nextQuestion();
+				if (!this.ready) {
+					this.ready = true;
+					this.nextQuestion();
+				}
+			}
+			else {
+				firebase.auth().signInAnonymously()
+				.catch((error) => {
+					console.error(error.code, error.message);
+				});
+				return;
+			}
+		});
 	}
 
 	nextQuestion() {
