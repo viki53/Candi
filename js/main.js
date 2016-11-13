@@ -90,6 +90,10 @@ class QuestionManager {
 				this.prepareRadioAnswers(question);
 			break;
 
+			case 'autocomplete':
+				this.prepareAutocompleteAnswers(question);
+			break;
+
 			case 'checkbox':
 				this.prepareCheckboxAnswers(question);
 			break;
@@ -99,20 +103,31 @@ class QuestionManager {
 	prepareRadioAnswers(question) {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
 			label.addEventListener('click', (event) => {
+				event.preventDefault();
+				this.answerQuestion(question, question.choices[i]);
+			}, false);
+		}, this);
+	}
+	prepareAutocompleteAnswers(question) {
+		Array.prototype.forEach.call($$('#chat-form button[type="submit"]'), function (label, i) {
+			label.addEventListener('click', (event) => {
+				event.preventDefault();
+				console.info('Clicked autocomplete', i);
 				this.answerQuestion(question, question.choices[i]);
 			}, false);
 		}, this);
 	}
 	prepareCheckboxAnswers(question) {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
-			label.addEventListener('click', function () {
+			label.addEventListener('click', function (event) {
+				event.preventDefault();
 				console.info('Clicked checkbox', i);
 			}, false);
 		}, this);
 	}
 
 	answerQuestion(question, answer) {
-		console.info('Answered question "%s" with "%s"', question.label, answer.label);
+		console.info('Answered question "%s" with "%s"', question.id, answer.id);
 
 		firebase.database().ref('/answers/' + this.userId).update({
 			[question.id]: answer.id

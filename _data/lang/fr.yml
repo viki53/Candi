@@ -1,6 +1,6 @@
 questions:
   - id: pro001
-    label: Vous considérez vous comme appartenant à une religion ?
+    label: Vous considérez-vous comme appartenant à une religion ?
     choices:
       - id: yes
         label: Oui
