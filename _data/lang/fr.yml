@@ -1,64 +1,64 @@
 questions:
   - id: int001
-    label: Bonjour ! Moi c'est Candi !
+    label: Coucou ! Moi c'est Candi !
   - id: int002
     label: J'aimerais bien en savoir plus sur les religions, et leur rôle dans le monde moderne.
   - id: int003
-    label: Est-ce que tu peux m'aider ? J'ai quelques questions à te poser, il y en a pour moins de 5 min.
+    label: Est-ce que tu peux m'aider ? J'ai quelques questions à te poser, il y en a pour moins de 5 min.
     choices:
       - id: yes1
-        label: Bien sûr !
+        label: Bien sur !
       - id: yes2
-        label: C'est parti !
+        label: C'est parti !
       - id: yes3
-        label: Avec plaisir !
+        label: Avec plaisir !
 
   - id: pro001
-    label: Génial ! Avant de commencer, j'ai besoin d'en savoir un peu plus sur toi. Mon enquête est anonyme, mais ces infos rendront les résultats plus intéressants pour toi comme pour moi.
+    label: Génial ! Avant de commencer, j'ai besoin d'en savoir un peu plus sur toi. Mon enquête est anonyme, mais ces infos rendront les résultats plus intéressants pour toi comme pour moi.
   - id: pro002
-    label: Quelle religion suis-tu ?
+    label: Vous considérez-vous comme appartenant à une religion ?
     choices:
-      - key: christianity
+      - id: christianity
         value: Le Christianisme
-      - key: islam
+      - id: islam
         value: L'Islam
-      - key: hinduism
+      - id: hinduism
         value: L'Hindouisme
-      - key: buddhism
+      - id: buddhism
         value: Le Bouddhisme
-      - key: irreligion
+      - id: irreligion
         value: Sans religion / L'Irréligion
-      - key: other
+      - id: other
         value: Autre religion, croyance ou spiritualité
   - id: pro003
     label: Es-tu ?
     choices:
-      - key: girl
+      - id: girl
         label: Une fille / une femme
-      - key: boy
+      - id: boy
         label: Un garçon / un homme
-      - key: bot
+      - id: bot
         label: Un robot / ne se prononce pas
   - id: pro004
     label: Dans quel pays vis-tu ?
     choices:
-      - key: fr
+      - id: fr
         label: France
-      - key: se
+      - id: se
         label: Suède
-      - key: ch
+      - id: ch
         label: Suisse
-      - key: ie
+      - id: ie
         label: Irlande
 
   - id: q1
     label: Est-ce que la religion est un sujet qui te préoccupe ?
     choices:
-    - key: 3
+    - id: 3
       value: Oui, beaucoup
-    - key: 2
+    - id: 2
       value: Moyennement
-    - key: 1
+    - id: 1
       value: Pas trop
-    - key: 0
+    - id: 0
       value: Pas du tout
