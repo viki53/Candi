@@ -63,6 +63,8 @@
 
 		&.form-answer-radio-choices,
 		&.form-answer-checkbox-choices {
+			order: 1;
+
 			& > li {
 				margin: 5px;
 
@@ -109,15 +111,15 @@
 	}
 
 	& > div {
-		display: -webkit-flex;
-		display: -ms-flex;
-		display: flex;
-		flex-direction: row;
-		flex-wrap: nowrap;
-		align-items: flex-end;
-		justify-content: space-around;
-
 		&.form-answer-autocomplete {
+			display: -webkit-flex;
+			display: -ms-flex;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			align-items: flex-end;
+			justify-content: space-around;
+
 			input[type="text"],
 			button {
 				font-family: inherit;
@@ -144,6 +146,28 @@
 						background-color: transparentize($message-alternate-bg, .2);
 					}
 				}
+			}
+		}
+
+		&.form-answer-checkbox-options {
+			text-align: right;
+
+			output,
+			button {
+				display: inline-block;
+				font-family: inherit;
+				font-size: inherit;
+				padding: 10px;
+				text-align: center;
+				background-color: transparent;
+				color: $message-alternate-color;
+				border: none;
+			}
+			output {
+				vertical-align: middle;
+			}
+			button {
+				margin-left: 10px;
 			}
 		}
 	}

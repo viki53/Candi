@@ -198,7 +198,7 @@ class QuestionManager {
 		let previousAnswer = this._answers[question.id] || [];
 
 		let updateCheckboxCount = () => {
-			$('#form-answer-checkbox-count').textContent = answers.length + '/' + question.choices.length;
+			$('#form-answer-checkbox-count').textContent = answers.length + '/' + (question.max_choices || question.choices.length);
 		}
 		let answerCheckbox = (event) => {
 			this.answerQuestion(question, answers);
@@ -224,8 +224,11 @@ class QuestionManager {
 				if (!input.checked && index !== -1) {
 					answers.splice(index, 1);
 				}
-				else if (input.checked) {
+				else if (input.checked && answers.length < question.max_choices) {
 					answers.push(answer);
+				}
+				else {
+					input.checked = false;
 				}
 
 				updateCheckboxCount();

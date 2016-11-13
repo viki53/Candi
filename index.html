@@ -65,6 +65,10 @@
 </template>
 
 <template id="tpl-form-answer-checkbox">
+	<div class="form-answer-checkbox-options">
+		<output id="form-answer-checkbox-count">0/{{choices.length}}</output>
+		<button type="submit">Confirm</button>
+	</div>
 	<ul class="form-answer-checkbox-choices">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
@@ -75,10 +79,6 @@
 		</li>
 		{{/each}}
 	</ul>
-	<div class="form-answer-checkbox-options">
-		<output id="form-answer-checkbox-count">0/{{choices.length}}</output>
-		<button type="submit">Confirm</button>
-	</div>
 </template>
 {% endraw %}
 
