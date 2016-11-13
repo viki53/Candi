@@ -1,73 +1,44 @@
+'use strict';
+
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
-const QUESTIONS = [
-	{
-		id: 'q1',
-		label: 'Are you religious?',
-		type: 'radio',
-		choices: [
-			{
-				id: 'q1a1',
-				label: 'Yes'
-			},
-			{
-				id: 'q1a2',
-				label: 'No'
-			}
-		]
-	},
-	{
-		id: 'q2',
-		label: 'What do you believe in?',
-		type: 'checkbox',
-		choices: [
-			{
-				id: 'q2a1',
-				label: 'Nothing'
-			},
-			{
-				id: 'q2a2',
-				label: 'God'
-			},
-			{
-				id: 'q2a3',
-				label: 'Allah'
-			},
-			{
-				id: 'q2a4',
-				label: 'Mother Nature'
-			},
-			{
-				id: 'q2a5',
-				label: 'Satan'
-			},
-			{
-				id: 'q2a6',
-				label: 'Ganesh'
-			},
-			{
-				id: 'q2a7',
-				label: 'Pasta'
-			}
-		]
-	}
-];
 
 const TPL_QUESTION = Handlebars.compile($('#tpl-question').innerHTML);
 
 const TPL_ANSWERS = {
 	radio: Handlebars.compile($('#tpl-answer-radio').innerHTML),
+	autocomplete: Handlebars.compile($('#tpl-answer-autocomplete').innerHTML),
 	checkbox: Handlebars.compile($('#tpl-answer-checkbox').innerHTML)
 };
 
 const TPL_FORM_ANSWERS = {
 	radio: Handlebars.compile($('#tpl-form-answer-radio').innerHTML),
+	autocomplete: Handlebars.compile($('#tpl-form-answer-autocomplete').innerHTML),
 	checkbox: Handlebars.compile($('#tpl-form-answer-checkbox').innerHTML)
 };
 
 class QuestionManager {
-	constructor(questions) {
+	constructor(questions, translations) {
 		this._currentIndex = -1; // Current question index
+
+		for (let question of questions) {
+			console.dir(question);
+			for (let question_trad of translations.questions) {
+				if (question_trad.id === question.id) {
+					question.label = question_trad.label;
+
+					for (let choice of question.choices) {
+						for (let choice_trad of question_trad.choices) {
+							if (choice_trad.id === choice.id) {
+								choice.label = choice_trad.label;
+							}
+						}
+					}
+				}
+			}
+			console.dir(question);
+			console.log('----------');
+		}
 		this._questions = questions;
 
 		this._firebaseConfig = {

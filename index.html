@@ -20,6 +20,11 @@
 		{{label}}
 	</li>
 </template>
+<template id="tpl-answer-autocomplete">
+	<li class="message user">
+		{{label}}
+	</li>
+</template>
 <template id="tpl-answer-checkbox">
 	<li class="message user">
 		{{#each choices}}
@@ -41,6 +46,18 @@
 	</ul>
 </template>
 
+<template id="tpl-form-answer-autocomplete">
+	<div class="form-answer-autocomplete-options">
+		<input type="text" list="question-{{id}}-datalist">
+		<datalist id="question-{{id}}-datalist">
+			{{#each choices}}
+			<option value="{{label}}"></option>
+			{{/each}}
+		</datalist>
+		<button type="submit">Confirm</button>
+	</div>
+</template>
+
 <template id="tpl-form-answer-checkbox">
 	<ul class="form-answer-checkbox-choices">
 		{{#each choices}}
@@ -60,8 +77,15 @@
 {% endraw %}
 
 <script>
+	{% assign questions = site.data.questions %}
+	{% assign locale = "fr" %}
+	{% assign translations = site.data.lang[locale] %}
+
 	document.addEventListener('DOMContentLoaded', function() {
-		const MANAGER = new QuestionManager(QUESTIONS);
+		const QUESTIONS = {{questions | jsonify}};
+		const TRANSLATIONS = {{translations | jsonify}};
+
+		const MANAGER = new QuestionManager(QUESTIONS, TRANSLATIONS);
 	}, false);
 </script>
 {% include footer.html %}

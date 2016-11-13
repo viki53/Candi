@@ -1,12 +1,24 @@
 - id: pro001
   category: profile
-  choices: countrylist
-  type: countrylist
+  type: radio
+  choices:
+    - id: yes
+    - id: no
 - id: pro002
   category: profile
-  choices: religionlist
-  type: radio
+  type: autocomplete
+  choices:
+    - id: fr
+    - id: se
+    - id: ch
+    - id: ie
 - id: q1
   category: general
-  choices: yesNo
-  type: bool
+  type: checkbox
+  choices:
+    - id: christianity
+    - id: islam
+    - id: hinduism
+    - id: buddhism
+    - id: irreligion
+    - id: other
