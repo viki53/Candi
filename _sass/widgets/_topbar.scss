@@ -3,6 +3,13 @@
 	background-color: $topbar-bg;
 	color: $topbar-color;
 
+	a,
+	span {
+		display: block;
+		padding: 10px 5px;
+		text-decoration: none;
+	}
+
 	& > .container {
 		display: -webkit-flex;
 		display: -ms-flex;
@@ -13,6 +20,8 @@
 
 		& > h1 {
 			align-self: flex-start;
+			font-size: 24px;
+			line-height: 26px;
 			margin: 0;
 		}
 
@@ -35,11 +44,6 @@
 					margin: 0;
 					padding: 0;
 
-					& > a,
-					& > span {
-						display: block;
-						padding: 10px 5px;
-					}
 				}
 			}
 		}
