@@ -63,15 +63,20 @@
 
 		&.form-answer-radio-choices,
 		&.form-answer-checkbox-choices {
+			order: 1;
+
 			& > li {
 				margin: 5px;
 
-				& > input[type="radio"] {
+				& > input[type="radio"],
+				& > input[type="checkbox"] {
 					position: absolute;
 					top: -50px;
 					opacity: 0;
 				}
+
 				& > input[type="radio"]:focus ~ label,
+				& > input[type="checkbox"]:focus ~ label,
 				& > label:hover {
 					&::before {
 						content: '';
@@ -85,6 +90,7 @@
 						border-bottom-color: $message-bg;
 					}
 				}
+
 				& > label {
 					position: relative;
 					padding: 10px;
@@ -94,29 +100,31 @@
 					border-radius: 10px;
 					border-bottom-right-radius: 0;
 					cursor: pointer;
+				}
 
-					&:active {
-						background-color: transparentize($message-alternate-bg, .2);
-					}
+				& > input[type="checkbox"]:checked ~ label,
+				& > label:active {
+					background-color: transparentize($message-alternate-bg, .2);
 				}
 			}
 		}
 	}
 
 	& > div {
-		display: -webkit-flex;
-		display: -ms-flex;
-		display: flex;
-		flex-direction: row;
-		flex-wrap: nowrap;
-		align-items: flex-end;
-		justify-content: space-around;
-
 		&.form-answer-autocomplete {
+			display: -webkit-flex;
+			display: -ms-flex;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			align-items: flex-end;
+			justify-content: space-around;
+
 			input[type="text"],
 			button {
 				font-family: inherit;
 				font-size: inherit;
+				line-height: inherit;
 				padding: 10px;
 				background-color: transparent;
 				color: $message-alternate-color;
@@ -133,12 +141,37 @@
 				flex: 1 1 30px;
 				order: 2;
 				margin-left: 10px;
+				cursor: pointer;
 
 				&:active {
 					& ~ input[type="text"] {
 						background-color: transparentize($message-alternate-bg, .2);
 					}
 				}
+			}
+		}
+
+		&.form-answer-checkbox-options {
+			text-align: right;
+
+			output,
+			button {
+				display: inline-block;
+				font-family: inherit;
+				font-size: inherit;
+				line-height: inherit;
+				padding: 10px;
+				text-align: center;
+				background-color: transparent;
+				color: $message-alternate-color;
+				border: none;
+			}
+			output {
+				vertical-align: middle;
+			}
+			button {
+				margin-left: 10px;
+				cursor: pointer;
 			}
 		}
 	}

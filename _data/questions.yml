@@ -14,7 +14,8 @@
   category: profile
 - id: pro002
   category: profile
-  type: radio
+  type: checkbox
+  max_choices: 4
   choices:
     - id: christianity
     - id: islam
