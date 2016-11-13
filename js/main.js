@@ -57,7 +57,6 @@ class QuestionManager {
 					this.ready = true;
 					firebase.database().ref('/answers/' + this.userId).once('value', (data) => {
 						this._answers = data.val() || {};
-						console.dir(this._answers);
 
 						this.nextQuestion();
 					});
@@ -74,7 +73,6 @@ class QuestionManager {
 	}
 
 	nextQuestion() {
-		console.log('nextQuestion');
 		if (!this._questions[this._currentIndex + 1]) {
 			throw new RangeError('No next question');
 		}
@@ -85,7 +83,6 @@ class QuestionManager {
 	}
 
 	previousQuestion() {
-		console.log('nextQuestion');
 		if (!this._questions[this._currentIndex - 1]) {
 			throw new RangeError('No previous question');
 		}
@@ -96,7 +93,6 @@ class QuestionManager {
 	}
 
 	displayCurrentQuestion() {
-		console.log('displayCurrentQuestion');
 		let question = this._questions[this._currentIndex];
 
 		$('#chat-messages').innerHTML += TPL_QUESTION(question);
@@ -105,8 +101,6 @@ class QuestionManager {
 			return this.nextQuestion();
 		}
 		else {
-			console.log(JSON.stringify(question, null, '\t'));
-
 			$('#chat-form').innerHTML = TPL_FORM_ANSWERS[question.type](question);
 		}
 
@@ -127,7 +121,6 @@ class QuestionManager {
 
 	prepareRadioAnswers(question) {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
-			console.log(question.choices[i].id, this._answers[question.id]);
 			if (question.choices[i].id === this._answers[question.id]) {
 				label.classList.add('highlight');
 			}
@@ -141,7 +134,6 @@ class QuestionManager {
 		let answerAutocomplete = (event) => {
 			event.preventDefault();
 			let input = $('#chat-form input[type="text"]').value;
-			console.info('Clicked autocomplete', input);
 
 			for (let choice of question.choices) {
 				if (choice.label === input) {
@@ -164,14 +156,11 @@ class QuestionManager {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
 			label.addEventListener('click', (event) => {
 				event.preventDefault();
-				console.info('Clicked checkbox', i);
 			}, false);
 		}, this);
 	}
 
 	answerQuestion(question, answer) {
-		console.info('Answered question "%s" with "%s"', question.id, answer.id);
-
 		firebase.database().ref('/answers/' + this.userId).update({
 			[question.id]: answer.id
 		});
