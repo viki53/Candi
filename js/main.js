@@ -60,6 +60,11 @@ const TPL_ANSWERS = {
 	checkbox: Handlebars.compile($('#tpl-answer-checkbox').innerHTML)
 };
 
+const TPL_FORM_ANSWERS = {
+	radio: Handlebars.compile($('#tpl-form-answer-radio').innerHTML),
+	checkbox: Handlebars.compile($('#tpl-form-answer-checkbox').innerHTML)
+};
+
 class QuestionManager {
 	constructor(questions) {
 		this._currentIndex = -1; // Current question index
@@ -85,15 +90,42 @@ class QuestionManager {
 
 		$('#chat-messages').innerHTML += TPL_QUESTION(question);
 
-		if (!TPL_ANSWERS[question.type]) {
+		if (!TPL_FORM_ANSWERS[question.type]) {
 			return this.nextQuestion();
 		}
 		else {
-			$('#chat-form').innerHTML = TPL_ANSWERS[question.type](question);
+			$('#chat-form').innerHTML = TPL_FORM_ANSWERS[question.type](question);
+		}
+
+		switch (question.type) {
+			case 'radio':
+				this.prepareRadioAnswers(question);
+			break;
+
+			case 'checkbox':
+				this.prepareCheckboxAnswers(question);
+			break;
 		}
 	}
-};
 
-document.addEventListener('DOMContentLoaded', function() {
-	const MANAGER = new QuestionManager(QUESTIONS);
-}, false);
+	prepareRadioAnswers(question) {
+		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
+			label.addEventListener('click', (event) => {
+				this.answerQuestion(question, question.choices[i]);
+			}, false);
+		}, this);
+	}
+	prepareCheckboxAnswers(question) {
+		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
+			label.addEventListener('click', function () {
+				console.info('Clicked checkbox', i);
+			}, false);
+		}, this);
+	}
+
+	answerQuestion(question, answer) {
+		console.info('Answered question "%s" with "%s"', question.label, answer.label);
+		$('#chat-messages').innerHTML += TPL_ANSWERS[question.type](answer);
+		return this.nextQuestion();
+	}
+};

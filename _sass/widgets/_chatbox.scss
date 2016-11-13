@@ -13,6 +13,7 @@
 	overflow: auto;
 
 	.message {
+		clear: both;
 		border: 8px;
 		margin: 10px;
 		padding: 10px;
@@ -23,8 +24,10 @@
 
 		&.bot {
 			border-bottom-left-radius: 0;
+			float: left;
 		}
 		&:not(.bot) {
+			float: right;
 			background-color: $message-alternate-bg;
 			color: $message-alternate-color;
 			border-bottom-right-radius: 0;
