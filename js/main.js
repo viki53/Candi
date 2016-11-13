@@ -180,6 +180,7 @@ class QuestionManager {
 		this._answers[question.id] = question.lastAnswer = answer.id;
 
 		this.chat_messages.innerHTML += TPL_ANSWERS[question.type](answer);
+
 		this.chat_form.innerHTML = '';
 		this.scrollToBottom();
 
