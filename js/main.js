@@ -77,6 +77,10 @@ class QuestionManager {
 		});
 	}
 
+	scrollToBottom() {
+		this.chat_messages.scrollTop = this.chat_messages.scrollHeight;
+	}
+
 	nextQuestion() {
 		if (!this._questions[this._currentIndex + 1]) {
 			throw new RangeError('No next question');
@@ -103,6 +107,7 @@ class QuestionManager {
 		this.chat_messages.innerHTML += TPL_QUESTION(question);
 
 		if (!TPL_FORM_ANSWERS[question.type]) {
+			this.scrollToBottom();
 			return this.nextQuestion();
 		}
 		else {
@@ -123,7 +128,7 @@ class QuestionManager {
 			break;
 		}
 
-		this.chat_messages.scrollTop = this.chat_messages.scrollHeight;
+		this.scrollToBottom();
 	}
 
 	prepareRadioAnswers(question) {
@@ -175,6 +180,10 @@ class QuestionManager {
 		this._answers[question.id] = question.lastAnswer = answer.id;
 
 		this.chat_messages.innerHTML += TPL_ANSWERS[question.type](answer);
-		return this.nextQuestion();
+
+		this.chat_form.innerHTML = '';
+		this.scrollToBottom();
+
+		this.nextQuestion();
 	}
 };

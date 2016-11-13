@@ -18,47 +18,49 @@ questions:
   - id: pro002
     label: Quelle religion suis-tu ?
     choices:
-      - key: christianity
-        value: Le Christianisme
-      - key: islam
-        value: L'Islam
-      - key: hinduism
-        value: L'Hindouisme
-      - key: buddhism
-        value: Le Bouddhisme
-      - key: irreligion
-        value: Sans religion / L'Irréligion
-      - key: other
-        value: Autre religion, croyance ou spiritualité
+      - id: christianity
+        label: Le Christianisme
+      - id: islam
+        label: L'Islam
+      - id: hinduism
+        label: L'Hindouisme
+      - id: buddhism
+        label: Le Bouddhisme
+      - id: irreligion
+        label: Sans religion / L'Irréligion
+      - id: other
+        label: Autre religion, croyance ou spiritualité
   - id: pro003
     label: Es-tu ?
     choices:
-      - key: girl
+      - id: girl
         label: Une fille / une femme
-      - key: boy
+      - id: boy
         label: Un garçon / un homme
-      - key: bot
+      - id: bot
         label: Un robot / ne se prononce pas
   - id: pro004
     label: Dans quel pays vis-tu ?
     choices:
-      - key: fr
+      - id: fr
         label: France
-      - key: se
+      - id: se
         label: Suède
-      - key: ch
+      - id: ch
         label: Suisse
-      - key: ie
+      - id: ie
         label: Irlande
 
   - id: q1
     label: Est-ce que la religion est un sujet qui te préoccupe ?
     choices:
-    - key: 3
-      value: Oui, beaucoup
-    - key: 2
-      value: Moyennement
-    - key: 1
-      value: Pas trop
-    - key: 0
-      value: Pas du tout
+    - id: 3
+      label: Oui, beaucoup
+    - id: 2
+      label: Moyennement
+    - id: 1
+      label: Pas trop
+    - id: 0
+      label: Pas du tout
+  - id: out001
+    label: Merci pour tes réponses ! Je comprends mieux
