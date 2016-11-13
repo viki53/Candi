@@ -7,7 +7,14 @@
 	span {
 		display: block;
 		padding: 10px 5px;
+	}
+	a {
 		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			background-color: $topbar-link-bg-hover;
+		}
 	}
 
 	& > .container {
