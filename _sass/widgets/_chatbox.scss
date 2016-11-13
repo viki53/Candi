@@ -3,6 +3,8 @@
 	flex-direction: column;
 	justify-content: space-between;
 	height: calc(100vh - #{$topbar-height});
+	max-width: $size-phablet;
+	margin: 0 auto;
 }
 
 #chat-messages {
