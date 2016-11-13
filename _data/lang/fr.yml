@@ -1,37 +1,35 @@
 questions:
   - id: int001
-    label: Bonjour ! Moi c'est Candi !
+    label: Coucou ! Moi c'est Candi !
   - id: int002
     label: J'aimerais bien en savoir plus sur les religions, et leur rôle dans le monde moderne.
   - id: int003
-    label: Est-ce que tu peux m'aider ? J'ai quelques questions à te poser, il y en a pour moins de 5 min.
+    label: Est-ce que tu peux m'aider ? J'ai quelques questions à te poser, il y en a pour moins de 5 min.
     choices:
       - id: yes1
-        label: Bien sûr !
+        label: Bien sur !
       - id: yes2
-        label: C'est parti !
+        label: C'est parti !
       - id: yes3
-        label: Avec plaisir !
+        label: Avec plaisir !
 
   - id: pro001
-    label: Génial ! Avant de commencer, j'ai besoin d'en savoir un peu plus sur toi. Mon enquête est anonyme, mais ces infos rendront les résultats plus intéressants pour toi comme pour moi.
+    label: Génial ! Avant de commencer, j'ai besoin d'en savoir un peu plus sur toi. Mon enquête est anonyme, mais ces infos rendront les résultats plus intéressants pour toi comme pour moi.
   - id: pro002
-    label: Quelle religion suis-tu ?
+    label: Vous considérez-vous comme appartenant à une religion ?
     choices:
       - id: christianity
-        label: Christianisme
+        value: Le Christianisme
       - id: islam
-        label: Islam
+        value: L'Islam
       - id: hinduism
-        label: Hindouisme
+        value: L'Hindouisme
       - id: buddhism
-        label: Bouddhisme
-      - id: atheist
-        label: Athée
-      - id: agnostic
-        label: Agnostique
+        value: Le Bouddhisme
+      - id: irreligion
+        value: Sans religion / L'Irréligion
       - id: other
-        label: Autre religion, croyance ou spiritualité
+        value: Autre religion, croyance ou spiritualité
   - id: pro003
     label: Es-tu ?
     choices:
@@ -57,12 +55,10 @@ questions:
     label: Est-ce que la religion est un sujet qui te préoccupe ?
     choices:
     - id: 3
-      label: Oui, beaucoup
+      value: Oui, beaucoup
     - id: 2
-      label: Moyennement
+      value: Moyennement
     - id: 1
-      label: Pas trop
+      value: Pas trop
     - id: 0
-      label: Pas du tout
-  - id: out001
-    label: Merci pour tes réponses ! Je comprends mieux
+      value: Pas du tout
