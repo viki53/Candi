@@ -19,6 +19,7 @@
 	.message {
 		clear: both;
 		border: 8px;
+		max-width: calc(100% - 40px);
 		margin: 10px;
 		padding: 10px;
 		background-color: $message-bg;
