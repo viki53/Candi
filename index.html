@@ -20,7 +20,25 @@
 <template id="tpl-answer-radio">
 	<ul>
 		{{#each choices}}
-		<li data-id="{{id}}">{{label}}</li>
+		<li id="question-{{../id}}-answer-{{id}}">
+			<label>
+				<input type="radio" name="question-{{../id}}" value="{{id}}">
+				{{label}}
+			</label>
+		</li>
+		{{/each}}
+	</ul>
+</template>
+
+<template id="tpl-answer-checkbox">
+	<ul>
+		{{#each choices}}
+		<li id="question-{{../id}}-answer-{{id}}">
+			<label>
+				<input type="checkbox" name="question-{{../id}}[]" value="{{id}}">
+				{{label}}
+			</label>
+		</li>
 		{{/each}}
 	</ul>
 </template>
