@@ -29,7 +29,7 @@
 </template>
 
 <template id="tpl-form-answer-radio">
-	<ul class="form-answer-radio">
+	<ul class="form-answer-radio-choices">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
 			<input type="radio" name="question-{{../id}}" value="{{id}}">
@@ -42,7 +42,7 @@
 </template>
 
 <template id="tpl-form-answer-checkbox">
-	<ul class="form-answer-checkbox">
+	<ul class="form-answer-checkbox-choices">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
 			<input type="checkbox" name="question-{{../id}}[]" value="{{id}}">
@@ -52,6 +52,10 @@
 		</li>
 		{{/each}}
 	</ul>
+	<div class="form-answer-checkbox-options">
+		<output id="form-answer-checkbox-count">0</output>/{{choices.length}}
+		<button type="submit">Confirm</button>
+	</div>
 </template>
 {% endraw %}
 
