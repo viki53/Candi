@@ -1,0 +1,34 @@
+questions:
+  - id: pro001
+    label: Vous considérez-vous comme appartenant à une religion ?
+    choices:
+      - id: yes
+        label: Oui
+      - id: no
+        label: Non
+  - id: pro002
+    label: Dans quel pays vivez-vous ?
+    choices:
+      - id: fr
+        label: France
+      - id: se
+        label: Suède
+      - id: ch
+        label: Suisse
+      - id: ie
+        label: Irlande
+  - id: q1
+    label: Quelles religions connaissez-vous ?
+    choices:
+      - key: christianity
+        value: Le Christianisme
+      - key: islam
+        value: L'Islam
+      - key: hinduism
+        value: L'Hindouisme
+      - key: buddhism
+        value: Le Bouddhisme
+      - key: irreligion
+        value: Sans religion / L'Irréligion
+      - key: other
+        value: Autre religion, croyance ou spiritualité

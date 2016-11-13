@@ -1,73 +1,42 @@
+'use strict';
+
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
-const QUESTIONS = [
-	{
-		id: 'q1',
-		label: 'Are you religious?',
-		type: 'radio',
-		choices: [
-			{
-				id: 'q1a1',
-				label: 'Yes'
-			},
-			{
-				id: 'q1a2',
-				label: 'No'
-			}
-		]
-	},
-	{
-		id: 'q2',
-		label: 'What do you believe in?',
-		type: 'checkbox',
-		choices: [
-			{
-				id: 'q2a1',
-				label: 'Nothing'
-			},
-			{
-				id: 'q2a2',
-				label: 'God'
-			},
-			{
-				id: 'q2a3',
-				label: 'Allah'
-			},
-			{
-				id: 'q2a4',
-				label: 'Mother Nature'
-			},
-			{
-				id: 'q2a5',
-				label: 'Satan'
-			},
-			{
-				id: 'q2a6',
-				label: 'Ganesh'
-			},
-			{
-				id: 'q2a7',
-				label: 'Pasta'
-			}
-		]
-	}
-];
 
 const TPL_QUESTION = Handlebars.compile($('#tpl-question').innerHTML);
 
 const TPL_ANSWERS = {
 	radio: Handlebars.compile($('#tpl-answer-radio').innerHTML),
+	autocomplete: Handlebars.compile($('#tpl-answer-autocomplete').innerHTML),
 	checkbox: Handlebars.compile($('#tpl-answer-checkbox').innerHTML)
 };
 
 const TPL_FORM_ANSWERS = {
 	radio: Handlebars.compile($('#tpl-form-answer-radio').innerHTML),
+	autocomplete: Handlebars.compile($('#tpl-form-answer-autocomplete').innerHTML),
 	checkbox: Handlebars.compile($('#tpl-form-answer-checkbox').innerHTML)
 };
 
 class QuestionManager {
-	constructor(questions) {
+	constructor(questions, translations) {
+		this.ready = false;
 		this._currentIndex = -1; // Current question index
+
+		for (let question of questions) {
+			for (let question_trad of translations.questions) {
+				if (question_trad.id === question.id) {
+					question.label = question_trad.label;
+
+					for (let choice of question.choices) {
+						for (let choice_trad of question_trad.choices) {
+							if (choice_trad.id === choice.id) {
+								choice.label = choice_trad.label;
+							}
+						}
+					}
+				}
+			}
+		}
 		this._questions = questions;
 
 		this._firebaseConfig = {
@@ -80,29 +49,50 @@ class QuestionManager {
 
 		firebase.initializeApp(this._firebaseConfig);
 
-		this.userId = localStorage.getItem('userId');
+		firebase.auth().onAuthStateChanged((_user) => {
+			if (_user && _user.uid) {
+				this.userId = _user.uid;
 
-		if (!this.userId) {
-			this.userId = firebase.database().ref('/answers').push().key;
-			localStorage.setItem('userId', this.userId);
-		}
+				if (!this.ready) {
+					this.ready = true;
+					firebase.database().ref('/answers/' + this.userId).once('value', (data) => {
+						this._answers = data.val() || {};
 
-		this.nextQuestion();
+						this.nextQuestion();
+					});
+				}
+			}
+			else {
+				firebase.auth().signInAnonymously()
+				.catch((error) => {
+					console.error(error.code, error.message);
+				});
+				return;
+			}
+		});
 	}
 
 	nextQuestion() {
-		console.log('nextQuestion');
 		if (!this._questions[this._currentIndex + 1]) {
-			throw new RangeError('No more questions');
+			throw new RangeError('No next question');
 		}
 
-		this._currentIndex++; // Increase current question index
+		this._currentIndex++;
+
+		this.displayCurrentQuestion();
+	}
+
+	previousQuestion() {
+		if (!this._questions[this._currentIndex - 1]) {
+			throw new RangeError('No previous question');
+		}
+
+		this._currentIndex--;
 
 		this.displayCurrentQuestion();
 	}
 
 	displayCurrentQuestion() {
-		console.log('displayCurrentQuestion');
 		let question = this._questions[this._currentIndex];
 
 		$('#chat-messages').innerHTML += TPL_QUESTION(question);
@@ -119,6 +109,10 @@ class QuestionManager {
 				this.prepareRadioAnswers(question);
 			break;
 
+			case 'autocomplete':
+				this.prepareAutocompleteAnswers(question);
+			break;
+
 			case 'checkbox':
 				this.prepareCheckboxAnswers(question);
 			break;
@@ -127,25 +121,51 @@ class QuestionManager {
 
 	prepareRadioAnswers(question) {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
+			if (question.choices[i].id === this._answers[question.id]) {
+				label.classList.add('highlight');
+			}
 			label.addEventListener('click', (event) => {
+				event.preventDefault();
 				this.answerQuestion(question, question.choices[i]);
 			}, false);
 		}, this);
 	}
+	prepareAutocompleteAnswers(question) {
+		let answerAutocomplete = (event) => {
+			event.preventDefault();
+			let input = $('#chat-form input[type="text"]').value;
+
+			for (let choice of question.choices) {
+				if (choice.label === input) {
+					this.answerQuestion(question, choice);
+					$('#chat-form').removeEventListener('submit', answerAutocomplete);
+				}
+			}
+		};
+
+		if (this._answers[question.id]) {
+			for (var choice of question.choices) {
+				if (choice.id === this._answers[question.id]) {
+					$('#chat-form input[type="text"]').value = choice.label;
+				}
+			}
+		}
+		$('#chat-form').addEventListener('submit', answerAutocomplete, false);
+	}
 	prepareCheckboxAnswers(question) {
 		Array.prototype.forEach.call($$('#chat-form label'), function (label, i) {
-			label.addEventListener('click', function () {
-				console.info('Clicked checkbox', i);
+			label.addEventListener('click', (event) => {
+				event.preventDefault();
 			}, false);
 		}, this);
 	}
 
 	answerQuestion(question, answer) {
-		console.info('Answered question "%s" with "%s"', question.label, answer.label);
-
 		firebase.database().ref('/answers/' + this.userId).update({
 			[question.id]: answer.id
 		});
+
+		this._answers[question.id] = question.lastAnswer = answer.id;
 
 		$('#chat-messages').innerHTML += TPL_ANSWERS[question.type](answer);
 		return this.nextQuestion();

@@ -9,7 +9,16 @@ var config = {
 
 firebase.initializeApp(config);
 
-var user = window.localStorage.getItem("userid")
+var user;
+firebase.auth().onAuthStateChanged(function(_user) {
+	if (_user) {
+		user = _user.uid
+	} else {
+		firebase.auth().signInAnonymously().catch(function(error) {
+			console.error(error.code, error.message)
+		})
+	}
+})
 
 var answers = document.querySelectorAll('.answers li')
 
@@ -20,11 +29,6 @@ for (var i = 0; i < answers.length; i++) {
 function onanswer(event) {
 	var answer = {}
 	answer[this.dataset.questionid] = this.dataset.choiceid
-
-	if (!user) {
-		user = firebase.database().ref('/answers').push().key
-		window.localStorage.setItem("userid", user)
-	}
 
 	firebase.database().ref('/answers/' + user).update(answer)	
 }

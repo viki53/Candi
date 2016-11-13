@@ -20,6 +20,11 @@
 		{{label}}
 	</li>
 </template>
+<template id="tpl-answer-autocomplete">
+	<li class="message user">
+		{{label}}
+	</li>
+</template>
 <template id="tpl-answer-checkbox">
 	<li class="message user">
 		{{#each choices}}
@@ -29,7 +34,7 @@
 </template>
 
 <template id="tpl-form-answer-radio">
-	<ul class="form-answer-radio">
+	<ul class="form-answer-radio-choices">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
 			<input type="radio" name="question-{{../id}}" value="{{id}}">
@@ -41,8 +46,20 @@
 	</ul>
 </template>
 
+<template id="tpl-form-answer-autocomplete">
+	<div class="form-answer-autocomplete-options">
+		<input type="text" list="question-{{id}}-datalist">
+		<datalist id="question-{{id}}-datalist">
+			{{#each choices}}
+			<option value="{{label}}"></option>
+			{{/each}}
+		</datalist>
+		<button type="submit">Confirm</button>
+	</div>
+</template>
+
 <template id="tpl-form-answer-checkbox">
-	<ul class="form-answer-checkbox">
+	<ul class="form-answer-checkbox-choices">
 		{{#each choices}}
 		<li id="question-{{../id}}-answer-{{id}}">
 			<input type="checkbox" name="question-{{../id}}[]" value="{{id}}">
@@ -52,12 +69,24 @@
 		</li>
 		{{/each}}
 	</ul>
+	<div class="form-answer-checkbox-options">
+		<output id="form-answer-checkbox-count">0</output>/{{choices.length}}
+		<button type="submit">Confirm</button>
+	</div>
 </template>
 {% endraw %}
 
 <script>
+	{% assign questions = site.data.questions %}
+	{% assign locale = "fr" %}
+	{% assign translations = site.data.lang[locale] %}
+	var MANAGER;
+
 	document.addEventListener('DOMContentLoaded', function() {
-		const MANAGER = new QuestionManager(QUESTIONS);
+		const QUESTIONS = {{questions | jsonify}};
+		const TRANSLATIONS = {{translations | jsonify}};
+
+		MANAGER = new QuestionManager(QUESTIONS, TRANSLATIONS);
 	}, false);
 </script>
 {% include footer.html %}
