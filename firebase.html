@@ -1,0 +1,29 @@
+---
+
+lang: fr
+
+---
+
+{% include head.html %}
+{% assign lang = site.data.lang[page.lang] %}
+
+
+<h1>Firebase</h1>
+
+{% for question in site.data.questions %}
+
+<form class="card blue">
+	<label class="question">{{lang.questions[question.id]}}</label>
+	<ul class="answers">
+		{% for choices in lang.choices[question.choices] %}
+			<li data-choiceid="{{choices.key}}" data-questionid="{{question.id}}">{{choices.value}}</li>
+		{% endfor %}
+	</ul>
+</form>
+
+{% endfor %}
+
+<script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+<script src="js/firebase.js"></script>
+
+{% include footer.html %}
