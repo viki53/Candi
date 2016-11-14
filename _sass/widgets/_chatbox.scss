@@ -64,14 +64,14 @@
 		&.bot > p {
 			border-bottom-left-radius: 0;
 			float: left;
-			animation: messageFadeInBot 1s ease-out;
+			animation: messageFadeInBot 200ms ease-out;
 		}
 		&:not(.bot) > p {
 			float: right;
 			background-color: $message-alternate-bg;
 			color: $message-alternate-color;
 			border-bottom-right-radius: 0;
-			animation: messageFadeInUser 1s ease-out;
+			animation: messageFadeInUser 200ms ease-out;
 		}
 	}
 }

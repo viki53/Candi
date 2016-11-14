@@ -3,6 +3,8 @@
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
+const MESSAGE_ANIM_DURATION = 200;
+
 const TPL_QUESTION = Handlebars.compile($('#tpl-question').innerHTML);
 
 const TPL_ANSWERS = {
@@ -98,180 +100,203 @@ class QuestionManager {
 	}
 
 	nextQuestion() {
-		if (!this._questions[this._currentIndex + 1]) {
-			throw new RangeError('No next question');
-		}
+		return new Promise((resolve, reject) => {
+			if (!this._questions[this._currentIndex + 1]) {
+				reject(new RangeError('No next question'));
+			}
 
-		this._currentIndex++;
+			this._currentIndex++;
 
-		this.displayCurrentQuestion();
+			this.displayCurrentQuestion();
+			resolve();
+		});
 	}
 	previousQuestion() {
-		if (!this._questions[this._currentIndex - 1]) {
-			throw new RangeError('No previous question');
-		}
+		return new Promise((resolve, reject) => {
+			if (!this._questions[this._currentIndex - 1]) {
+				reject(new RangeError('No previous question'));
+			}
 
-		this._currentIndex--;
+			this._currentIndex--;
 
-		this.displayCurrentQuestion();
+			this.displayCurrentQuestion();
+			resolve();
+		});
 	}
 
 	displayCurrentQuestion() {
-		let question = this._questions[this._currentIndex];
+		return new Promise((resolve, reject) => {
+			let question = this._questions[this._currentIndex];
 
-		this.chat_messages.innerHTML += TPL_QUESTION(question);
+			this.chat_messages.innerHTML += TPL_QUESTION(question);
 
-		if (!TPL_FORM_ANSWERS[question.type]) {
+			if (!TPL_FORM_ANSWERS[question.type]) {
+				this.scrollToBottom();
+				setTimeout(() => {
+					resolve(this.nextQuestion());
+				}, MESSAGE_ANIM_DURATION);
+				return;
+			}
+			else {
+				this.chat_form.innerHTML = TPL_FORM_ANSWERS[question.type](question);
+			}
+
+			switch (question.type) {
+				case 'radio':
+					this.prepareRadioAnswers(question);
+				break;
+
+				case 'autocomplete':
+					this.prepareAutocompleteAnswers(question);
+				break;
+
+				case 'checkbox':
+					this.prepareCheckboxAnswers(question);
+				break;
+			}
+
 			this.scrollToBottom();
-			return this.nextQuestion();
-		}
-		else {
-			this.chat_form.innerHTML = TPL_FORM_ANSWERS[question.type](question);
-		}
-
-		switch (question.type) {
-			case 'radio':
-				this.prepareRadioAnswers(question);
-			break;
-
-			case 'autocomplete':
-				this.prepareAutocompleteAnswers(question);
-			break;
-
-			case 'checkbox':
-				this.prepareCheckboxAnswers(question);
-			break;
-		}
-
-		this.scrollToBottom();
+			resolve();
+		});
 	}
 
 	prepareRadioAnswers(question) {
-		Array.prototype.forEach.call($$('#chat-form label'), (label, i) => {
-			let input = label.parentNode.querySelector('input[type="radio"]');
+		return new Promise((resolve, reject) => {
+			Array.prototype.forEach.call($$('#chat-form label'), (label, i) => {
+				let input = label.parentNode.querySelector('input[type="radio"]');
 
-			if (question.choices[i].id === this._answers[question.id]) {
-				input.focus();
-			}
-
-			label.addEventListener('click', (event) => {
-				event.preventDefault();
-				this.answerQuestion(question, question.choices[i]);
-			}, false);
-			input.addEventListener('keypress', (event) => {
-				event.preventDefault();
-				if (event.key == 'Enter') {
-					this.answerQuestion(question, question.choices[i]);
+				if (question.choices[i].id === this._answers[question.id]) {
+					input.focus();
 				}
-			}, false);
+
+				label.addEventListener('click', (event) => {
+					event.preventDefault();
+					this.answerQuestion(question, question.choices[i]);
+				}, false);
+				input.addEventListener('keypress', (event) => {
+					event.preventDefault();
+					if (event.key == 'Enter') {
+						this.answerQuestion(question, question.choices[i]);
+					}
+				}, false);
+			});
+			resolve();
 		});
 	}
 	prepareAutocompleteAnswers(question) {
-		let input = this.chat_form.querySelector('input[type="text"]');
+		return new Promise((resolve, reject) => {
+			let input = this.chat_form.querySelector('input[type="text"]');
 
-		let answerAutocomplete = (event) => {
-			event.preventDefault();
-			let value = input.value;
+			let answerAutocomplete = (event) => {
+				event.preventDefault();
+				let value = input.value;
 
-			for (let choice of question.choices) {
-				if (choice.label === value) {
-					this.answerQuestion(question, choice);
-					this.chat_form.removeEventListener('submit', answerAutocomplete);
+				for (let choice of question.choices) {
+					if (choice.label === value) {
+						this.answerQuestion(question, choice);
+						this.chat_form.removeEventListener('submit', answerAutocomplete);
+					}
+				}
+			};
+
+			input.focus();
+
+			if (this._answers[question.id]) {
+				for (var choice of question.choices) {
+					if (choice.id === this._answers[question.id]) {
+						$('#chat-form input[type="text"]').value = choice.label;
+					}
 				}
 			}
-		};
-
-		input.focus();
-
-		if (this._answers[question.id]) {
-			for (var choice of question.choices) {
-				if (choice.id === this._answers[question.id]) {
-					$('#chat-form input[type="text"]').value = choice.label;
-				}
-			}
-		}
-		this.chat_form.addEventListener('submit', answerAutocomplete, false);
+			this.chat_form.addEventListener('submit', answerAutocomplete, false);
+			resolve();
+		});
 	}
 	prepareCheckboxAnswers(question) {
-		let answers = [];
+		return new Promise((resolve, reject) => {
+			let answers = [];
 
-		let previousAnswer = this._answers[question.id] || [];
+			let previousAnswer = this._answers[question.id] || [];
 
-		let updateCheckboxCount = () => {
-			$('#form-answer-checkbox-count').textContent = answers.length + '/' + (question.max_choices || question.choices.length);
-		}
-		let answerCheckbox = (event) => {
-			event.preventDefault();
-			this.answerQuestion(question, answers);
-			this.chat_form.removeEventListener('submit', answerCheckbox);
-		};
-
-		Array.prototype.forEach.call($$('#chat-form label'), (label, i) => {
-			let answer = question.choices[i];
-
-			let input = label.parentNode.querySelector('input[type="checkbox"]');
-
-			let index = previousAnswer.indexOf(answer.id);
-			if (index !== -1) {
-				input.checked = true;
-				answers.push(answer);
+			let updateCheckboxCount = () => {
+				$('#form-answer-checkbox-count').textContent = answers.length + '/' + (question.max_choices || question.choices.length);
 			}
+			let answerCheckbox = (event) => {
+				event.preventDefault();
+				this.answerQuestion(question, answers);
+				this.chat_form.removeEventListener('submit', answerCheckbox);
+			};
 
-			input.addEventListener('change', (event) => {
-				let index = answers.indexOf(answer);
+			Array.prototype.forEach.call($$('#chat-form label'), (label, i) => {
+				let answer = question.choices[i];
 
-				if (!input.checked && index !== -1) {
-					answers.splice(index, 1);
-				}
-				else if (input.checked && answers.length < question.max_choices) {
+				let input = label.parentNode.querySelector('input[type="checkbox"]');
+
+				let index = previousAnswer.indexOf(answer.id);
+				if (index !== -1) {
+					input.checked = true;
 					answers.push(answer);
 				}
-				else {
-					input.checked = false;
-				}
 
-				updateCheckboxCount();
-			}, false);
+				input.addEventListener('change', (event) => {
+					let index = answers.indexOf(answer);
+
+					if (!input.checked && index !== -1) {
+						answers.splice(index, 1);
+					}
+					else if (input.checked && answers.length < question.max_choices) {
+						answers.push(answer);
+					}
+					else {
+						input.checked = false;
+					}
+
+					updateCheckboxCount();
+				}, false);
+			});
+
+			updateCheckboxCount();
+
+			this.chat_form.addEventListener('submit', answerCheckbox, false);
+			resolve();
 		});
-
-		updateCheckboxCount();
-
-		this.chat_form.addEventListener('submit', answerCheckbox, false);
 	}
 
 	answerQuestion(question, answer) {
-		if (Array.isArray(answer)) {
-			let ids = [];
-			let labels = [];
+		return new Promise((resolve, reject) => {
+			if (Array.isArray(answer)) {
+				let ids = [];
+				let labels = [];
 
-			for (let ans of answer) {
-				ids.push(ans.id);
-				labels.push(ans.label);
+				for (let ans of answer) {
+					ids.push(ans.id);
+					labels.push(ans.label);
+				}
+
+				firebase.database().ref('/answers/' + this.userId).update({
+					[question.id]: ids
+				});
+
+				this._answers[question.id] = ids;
+
+				this.chat_messages.innerHTML += TPL_ANSWERS[question.type]({
+					answers: answer
+				});
+			}
+			else {
+				firebase.database().ref('/answers/' + this.userId).update({
+					[question.id]: answer.id
+				});
+
+				this._answers[question.id] = answer.id;
+
+				this.chat_messages.innerHTML += TPL_ANSWERS[question.type](answer);
 			}
 
-			firebase.database().ref('/answers/' + this.userId).update({
-				[question.id]: ids
-			});
+			this.chat_form.innerHTML = '';
+			this.scrollToBottom();
 
-			this._answers[question.id] = ids;
-
-			this.chat_messages.innerHTML += TPL_ANSWERS[question.type]({
-				answers: answer
-			});
-		}
-		else {
-			firebase.database().ref('/answers/' + this.userId).update({
-				[question.id]: answer.id
-			});
-
-			this._answers[question.id] = answer.id;
-
-			this.chat_messages.innerHTML += TPL_ANSWERS[question.type](answer);
-		}
-
-		this.chat_form.innerHTML = '';
-		this.scrollToBottom();
-
-		this.nextQuestion();
+			resolve(this.nextQuestion());
+		});
 	}
 };
