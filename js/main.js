@@ -201,11 +201,10 @@ class QuestionManager {
 			$('#form-answer-checkbox-count').textContent = answers.length + '/' + (question.max_choices || question.choices.length);
 		}
 		let answerCheckbox = (event) => {
+			event.preventDefault();
 			this.answerQuestion(question, answers);
 			this.chat_form.removeEventListener('submit', answerCheckbox);
 		};
-
-		console.dir(TPL_ANSWERS.checkbox);
 
 		Array.prototype.forEach.call($$('#chat-form label'), (label, i) => {
 			let answer = question.choices[i];
