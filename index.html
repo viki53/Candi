@@ -6,36 +6,46 @@
 <div id="chat-box">
 	<ul id="chat-messages">
 		<li class="message bot">
-			Chargement en cours…
+			<p>Chargement en cours…</p>
 		</li>
 	</ul>
 	<form action="#0" id="chat-form">
 	</form>
 </div>
 
+<div hidden aria-hidden="true" id="chat-messages-tmp"></div>
+
 {% raw %}
 <template id="tpl-question">
 	<li class="message bot">
-		{{label}}
+		<p>
+			{{label}}
+		</p>
 	</li>
 </template>
 
 <template id="tpl-answer-radio">
 	<li class="message user">
-		{{label}}
+		<p>
+			{{label}}
+		</p>
 	</li>
 </template>
 <template id="tpl-answer-autocomplete">
 	<li class="message user">
-		{{label}}
+		<p>
+			{{label}}
+		</p>
 	</li>
 </template>
 <template id="tpl-answer-checkbox">
 	<li class="message user">
-		{{#each answers~}}
-		{{~#if @index~}}, {{/if~}}
-		{{label}}
-		{{~/each}}
+		<p>
+			{{#each answers~}}
+			{{~#if @index~}}, {{/if~}}
+			{{label}}
+			{{~/each}}
+		</p>
 	</li>
 </template>
 

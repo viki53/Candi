@@ -49,11 +49,12 @@
 	- Moyennement
 	- Pas trop
 	- Pas du tout
-- Avec qui oses-tu parles tu religion ?
+- Avec qui oses-tu parler de religion ?
 	* Amis
 	* Famille
 	* Des collègues d'école ou de travail
 	* Inconnus
+	* Personne
 - Pour toi, la religion est-elle une source de motivation et d'inspiration ?
 	- Oui, beaucoup
 	- Moyennement
@@ -77,6 +78,7 @@
 	- Jamais
 - Penses-tu que l’on peut adhérer à plusieurs religions ?
 	- Non
+	- Je ne sais pas
 	- Oui
 - Penses-tu connaitre ta religion ?
 	- Je la connais bien
@@ -158,6 +160,9 @@
 - Est-ce que ça te dérange que tes proches parlent librement de religion ?
 	- Oui
 	- Non
+- Tes croyances ont elles déjà posé problème dans ta famille ?
+	- Oui
+	- Non
 
 ## Le choix
 
@@ -167,10 +172,10 @@
 	- Oui, je l'ai choisie
 	- Je ne me suis pas posé la question
 	- Non, j'ai fais comme mes proches
-	- Non, on me l'a imposé contre mon gré
+	- Non, on me l'a imposé
 - Que penses-tu du changement de religion ?
 	- Je suis pour
-	- Je m'en fous
+	- Je m'en fiche
 	- Je suis contre
 - Si tu devais changer de religion, quels seraient tes critères pour te décider ?
 	* Faire comme des proches ou d'autres personnes
@@ -188,9 +193,9 @@
 - As-tu déjà eu une relation de couple avec quelqu’un de religion différente ?
 	- Oui, et je le referais
 	- Oui, mais je ne le referais pas
-	- Non, mais j'aimerais essayer
+	- Non, mais ça ne me dérangerais pas
 	- Non, et je ne veux pas essayer
-- Penses-tu pouvoir vous épanouir en couple avec quelqu’un de religion différente ?
+- Penses-tu pouvoir t'épanouir en couple avec quelqu’un de religion différente ?
 	- Oui, j'aimerais l'échange culturel
 	- Oui, ce n'est pas un critère déterminant
 	- Ça serait difficile, mais pas impossible
@@ -227,7 +232,7 @@
 
 > Au fil de mes lectures sur la religion, j'ai souvent vu passé le mot "secte".
 
-- Penses-tu connaitre la définition d’une secte ?
+- Est-ce que tu comprends ce qu'est une secte ?
 	- Oui
 	- Non
 - Connais-tu une ou plusieurs sectes ?
@@ -295,8 +300,10 @@
 
 > Je te souhaite une super journée !
 
-
 ___
+
+Comment vois-tu la religion pour tes enfants
+Imposer ta religion à tes enfants
 
 Tu penses à d'autres questions ? Des idées pour améliorer l'entente entre les groupes... ? 
 

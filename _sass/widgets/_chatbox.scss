@@ -7,35 +7,71 @@
 	margin: 0 auto;
 }
 
+@keyframes messageFadeInBot {
+	0% {
+		opacity: 0;
+		transform: translate3d(-10px, 30px, 0) rotate(10deg);
+	}
+	100% {
+		opacity: 1;
+		transform: none;
+	}
+}
+@keyframes messageFadeInUser {
+	0% {
+		opacity: 0;
+		transform: translate3d(10px, 30px, 0) rotate(-10deg);
+	}
+	100% {
+		opacity: 1;
+		transform: none;
+	}
+}
+
 #chat-messages {
 	align-self: flex-start;
 	width: 100%;
+	height: 100%;
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
-	overflow-y: auto;
+	overflow-x: hidden;
+	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
 
 	.message {
 		clear: both;
-		border: 8px;
+
+		&::after {
+			content: '';
+			clear: both;
+		}
+
 		max-width: calc(100% - 40px);
 		margin: 10px;
-		padding: 10px;
-		background-color: $message-bg;
-		color: $message-color;
-		border-radius: 10px;
-		box-shadow: 1px 2px 4px $message-shadow-color;
 
-		&.bot {
+		& > p {
+			border: 8px;
+			padding: 10px;
+			background-color: $message-bg;
+			color: $message-color;
+			border-radius: 10px;
+			box-shadow: 1px 2px 4px $message-shadow-color;
+			-webkit-transform-origin: 0 0;
+			transform-origin: 0 0;
+		}
+
+		&.bot > p {
 			border-bottom-left-radius: 0;
 			float: left;
+			animation: messageFadeInBot 200ms ease-out;
 		}
-		&:not(.bot) {
+		&:not(.bot) > p {
 			float: right;
 			background-color: $message-alternate-bg;
 			color: $message-alternate-color;
 			border-bottom-right-radius: 0;
+			animation: messageFadeInUser 200ms ease-out;
 		}
 	}
 }
